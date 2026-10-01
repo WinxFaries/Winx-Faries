@@ -373,6 +373,12 @@
   @media(max-width:600px){.steam-community{padding:22px;}.steam-community .btn{width:100%;}}
   .reserve-heading{margin:36px 0 18px;font-family:var(--ff-head);font-size:26px;font-weight:500;}
   .reserve-grid{max-width:360px;border:1px solid var(--line);}
+  .player .steam-avatar{position:relative;overflow:hidden;}
+  .steam-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;}
+  .steam-avatar img[hidden]{display:none;}
+  .steam-avatar:hover{border-color:var(--crimson-lt);}
+  .steam-nick:hover{color:var(--crimson-lt);}
+  .profile-arrow{font-size:14px;color:var(--ivory-dim);}
 </style>
 </head>
 <body>
@@ -476,32 +482,32 @@
     <div class="player captain">
       <span class="badge">КАПИТАН</span>
       <div class="num">01</div>
-      <div class="avatar">B</div>
-      <div class="nick">Bloom</div>
+      <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561199841835812/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль Bloom — новая вкладка"><span class="avatar-fallback" aria-hidden="true">B</span><img src="https://avatars.fastly.steamstatic.com/43db734201f3292e7a4c7501a1eed73911c59a74_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
+      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199841835812/" target="_blank" rel="noopener noreferrer">Bloom<span class="profile-arrow" aria-hidden="true"> ↗</span></a></div>
       <div class="role">Капитан состава</div>
     </div>
     <div class="player">
       <div class="num">02</div>
-      <div class="avatar">T</div>
-      <div class="nick">Tokinxiik</div>
+      <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561198976219324/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль Tokinxiik — новая вкладка"><span class="avatar-fallback" aria-hidden="true">T</span><img src="https://avatars.fastly.steamstatic.com/5f96e65926fc80b1bd32172fad1861342aaa5c90_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
+      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561198976219324/" target="_blank" rel="noopener noreferrer">Tokinxiik<span class="profile-arrow" aria-hidden="true"> ↗</span></a></div>
       <div class="role">Штурмовой игрок</div>
     </div>
     <div class="player">
       <div class="num">03</div>
-      <div class="avatar">12</div>
-      <div class="nick">12player</div>
+      <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561199641226020/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль 12player — новая вкладка"><span class="avatar-fallback" aria-hidden="true">12</span><img src="https://avatars.fastly.steamstatic.com/6f45a88d243bbadb1c4e486e288a73badb76fa7d_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
+      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199641226020/" target="_blank" rel="noopener noreferrer">12player<span class="profile-arrow" aria-hidden="true"> ↗</span></a></div>
       <div class="role">Универсал</div>
     </div>
     <div class="player">
       <div class="num">04</div>
-      <div class="avatar">N</div>
-      <div class="nick">NeShkolar</div>
+      <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561198964101685/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль NeShkolar — новая вкладка"><span class="avatar-fallback" aria-hidden="true">N</span><img src="https://avatars.fastly.steamstatic.com/934c369197a22c858bf0e7c26d37fa24827c273e_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
+      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561198964101685/" target="_blank" rel="noopener noreferrer">NeShkolar<span class="profile-arrow" aria-hidden="true"> ↗</span></a></div>
       <div class="role">Саппорт</div>
     </div>
     <div class="player">
       <div class="num">05</div>
-      <div class="avatar">F</div>
-      <div class="nick">Fouzer</div>
+      <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561199771499987/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль Fouzer — новая вкладка"><span class="avatar-fallback" aria-hidden="true">F</span><img src="https://avatars.fastly.steamstatic.com/4be173e349ebcca4a47ac2f935d867dc27f8ea43_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
+      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199771499987/" target="_blank" rel="noopener noreferrer">Fouzer<span class="profile-arrow" aria-hidden="true"> ↗</span></a></div>
       <div class="role">Снайпер</div>
     </div>
   </div>
@@ -510,8 +516,8 @@
     <div class="player">
       <span class="badge">ЗАМЕНА</span>
       <div class="num">06</div>
-      <div class="avatar">R</div>
-      <div class="nick">Rox1n</div>
+      <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561199132873486/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль Rox1n — новая вкладка"><span class="avatar-fallback" aria-hidden="true">R</span><img src="https://avatars.fastly.steamstatic.com/2f73908bab34ebb944a3f1035a9e032af2ca6568_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
+      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199132873486/" target="_blank" rel="noopener noreferrer">Rox1n<span class="profile-arrow" aria-hidden="true"> ↗</span></a></div>
       <div class="role">Запасной игрок</div>
     </div>
   </div>
@@ -641,6 +647,13 @@
     player.referrerPolicy = 'strict-origin-when-cross-origin';
     document.getElementById('cinemaFrame').replaceChildren(player);
     player.focus();
+  });
+
+  // Keep initials visible if the Steam CDN image cannot load.
+  document.querySelectorAll('.steam-avatar img').forEach(img => {
+    const showFallback = () => { img.hidden = true; };
+    img.addEventListener('error', showFallback);
+    if (img.complete && img.naturalWidth === 0) showFallback();
   });
 
   // Save only the visitor's cookie preference, scoped to this GitHub Pages site.
