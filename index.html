@@ -316,6 +316,32 @@
     .match{grid-template-columns:1fr;gap:8px;}
     .apply-form{grid-template-columns:1fr;}
   }
+
+  /* Cookie notice */
+  .cookie-notice{
+    position:fixed;bottom:20px;left:20px;right:20px;z-index:60;
+    max-width:680px;margin-left:auto;padding:24px;
+    background:var(--panel);border:1px solid var(--line);border-radius:4px;
+    box-shadow:0 12px 40px rgba(0,0,0,.45);
+    max-height:calc(100dvh - 40px);overflow:auto;
+  }
+  .cookie-notice[hidden]{display:none;}
+  .cookie-notice h2{font-family:var(--ff-head);font-size:24px;margin-bottom:8px;}
+  .cookie-notice p{font-size:13px;color:var(--ivory-dim);}
+  .cookie-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px;}
+  .cookie-actions button{cursor:pointer;}
+  .cookie-settings{
+    background:none;border:0;color:var(--ivory-dim);font:inherit;
+    font-size:12px;text-decoration:underline;cursor:pointer;
+  }
+  .cookie-settings:hover{color:var(--crimson-lt);}
+  .cookie-actions button:focus-visible,.cookie-settings:focus-visible{
+    outline:2px solid var(--crimson-lt);outline-offset:4px;
+  }
+  @media(max-width:480px){
+    .cookie-notice{left:12px;right:12px;bottom:12px;padding:18px;}
+    .cookie-actions .btn{width:100%;text-align:center;}
+  }
 </style>
 </head>
 <body>
@@ -419,8 +445,8 @@
     </div>
     <div class="player">
       <div class="num">03</div>
-      <div class="avatar">R</div>
-      <div class="nick">Roxin</div>
+      <div class="avatar">12</div>
+      <div class="nick">12player</div>
       <div class="role">Универсал</div>
     </div>
     <div class="player">
@@ -530,10 +556,60 @@
   <div class="footer-bottom">
     <span>© 2026 Winx Fairies Esports</span>
     <span>Сайт собран под фирменный стиль команды</span>
+    <button type="button" class="cookie-settings" id="cookieSettings" aria-controls="cookieNotice">Настройки cookie</button>
   </div>
 </footer>
 
+<aside class="cookie-notice" id="cookieNotice" aria-labelledby="cookieTitle" hidden>
+  <h2 id="cookieTitle">Файлы cookie</h2>
+  <p>Мы сохраняем ваш выбор о cookie на 6 месяцев. Аналитические и рекламные cookie
+    на этой странице не используются. Вы можете изменить выбор через
+    «Настройки cookie» внизу сайта.</p>
+  <div class="cookie-actions">
+    <button type="button" class="btn btn-solid" id="cookieAccept">Принять</button>
+    <button type="button" class="btn btn-ghost" id="cookieNecessary">Только необходимые</button>
+  </div>
+  <p id="cookieStatus" role="status" aria-live="polite"></p>
+</aside>
+
 <script>
+  // Save only the visitor's cookie preference, scoped to this GitHub Pages site.
+  const cookieNotice = document.getElementById('cookieNotice');
+  const cookieSettings = document.getElementById('cookieSettings');
+  const cookieStatus = document.getElementById('cookieStatus');
+  const cookieName = 'winx_cookie_choice';
+  const cookiePath = new URL('./', window.location.href).pathname;
+  const readCookieChoice = () => {
+    const entry = document.cookie.split('; ').find(item => item.startsWith(cookieName + '='));
+    return entry ? entry.slice(cookieName.length + 1) : '';
+  };
+  const validCookieChoice = () => ['accepted', 'necessary'].includes(readCookieChoice());
+  let openedFromSettings = false;
+  cookieNotice.hidden = validCookieChoice();
+  cookieSettings.addEventListener('click', () => {
+    openedFromSettings = true;
+    cookieNotice.hidden = false;
+    cookieStatus.textContent = '';
+    document.getElementById('cookieAccept').focus();
+  });
+  const saveCookieChoice = (choice) => {
+    const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+    document.cookie = cookieName + '=' + choice + '; Max-Age=15552000; Path=' + cookiePath + '; SameSite=Lax' + secure;
+    if (!validCookieChoice()) {
+      cookieStatus.textContent = 'Браузер не разрешает сохранить cookie. Ваш выбор применён для текущего просмотра.';
+      document.getElementById('cookieAccept').textContent = 'Закрыть';
+      document.getElementById('cookieAccept').onclick = () => {
+        cookieNotice.hidden = true;
+        cookieSettings.focus();
+      };
+      return;
+    }
+    cookieNotice.hidden = true;
+    if (openedFromSettings || cookieNotice.contains(document.activeElement)) cookieSettings.focus();
+  };
+  document.getElementById('cookieAccept').addEventListener('click', () => saveCookieChoice('accepted'));
+  document.getElementById('cookieNecessary').addEventListener('click', () => saveCookieChoice('necessary'));
+
   // Mobile menu toggle
   const navToggle = document.getElementById('navToggle');
   const mainNav = document.getElementById('mainNav');
@@ -594,3 +670,4 @@
 
 </body>
 </html>
+
