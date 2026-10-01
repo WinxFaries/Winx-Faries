@@ -647,11 +647,10 @@
 
 <aside class="cookie-notice" id="cookieNotice" aria-labelledby="cookieTitle" hidden>
   <h2 id="cookieTitle">Файлы cookie</h2>
-  <p>Мы сохраняем ваш выбор о cookie на 6 месяцев. Аналитические и рекламные cookie
-    на этой странице не используются. Вы можете изменить выбор через
-    «Настройки cookie» внизу сайта.</p>
+  <p>Необходимые cookie сохраняют ваш выбор на 6 месяцев. С вашего согласия Google Analytics собирает статистику посещений и действий: просмотры страниц, запуск видео, переходы по ссылкам и отправку заявки. Данные анкеты в аналитику не передаются. Рекламные функции отключены. Вы можете отказаться или отозвать согласие через «Настройки cookie» внизу сайта.</p>
+  <p><a class="inline-link" href="https://policies.google.com/privacy?hl=ru" target="_blank" rel="noopener noreferrer">Как Google обрабатывает данные ↗</a></p>
   <div class="cookie-actions">
-    <button type="button" class="btn btn-solid" id="cookieAccept">Принять</button>
+    <button type="button" class="btn btn-solid" id="cookieAccept">Принять все</button>
     <button type="button" class="btn btn-ghost" id="cookieNecessary">Только необходимые</button>
   </div>
   <p id="cookieStatus" role="status" aria-live="polite"></p>
@@ -700,6 +699,7 @@
     if (event.key === 'Escape') closeVerification();
   });
   document.getElementById('cinemaPlay').addEventListener('click', () => {
+    trackSiteEvent('tournament_video_open', {video_title: 'IEM Katowice 2025'});
     const player = document.createElement('iframe');
     player.title = 'IEM Katowice 2025 — официальный фрагмуви ESL';
     player.src = 'https://www.youtube-nocookie.com/embed/huHWDPMeXA0?autoplay=1&playsinline=1&rel=0';
@@ -717,43 +717,106 @@
     if (img.complete && img.naturalWidth === 0) showFallback();
   });
 
-  // Save only the visitor's cookie preference, scoped to this GitHub Pages site.
+  // Basic consent mode: no Google requests until analytics is accepted.
+  const GA_ID = 'G-173XKX061X';
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ window.dataLayer.push(arguments); }
+  gtag('consent', 'default', {
+    analytics_storage: 'denied', ad_storage: 'denied',
+    ad_user_data: 'denied', ad_personalization: 'denied'
+  });
   const cookieNotice = document.getElementById('cookieNotice');
   const cookieSettings = document.getElementById('cookieSettings');
   const cookieStatus = document.getElementById('cookieStatus');
-  const cookieName = 'winx_cookie_choice';
+  const cookieName = 'winx_analytics_choice_v1';
   const cookiePath = new URL('./', window.location.href).pathname;
   const readCookieChoice = () => {
     const entry = document.cookie.split('; ').find(item => item.startsWith(cookieName + '='));
     return entry ? entry.slice(cookieName.length + 1) : '';
   };
   const validCookieChoice = () => ['accepted', 'necessary'].includes(readCookieChoice());
+  let analyticsAllowed = readCookieChoice() === 'accepted';
+  let analyticsLoaded = false;
   let openedFromSettings = false;
+  window['ga-disable-' + GA_ID] = !analyticsAllowed;
+  const clearAnalyticsCookies = () => {
+    const domains = ['', window.location.hostname, '.' + window.location.hostname];
+    const paths = ['/', cookiePath];
+    document.cookie.split('; ').forEach(entry => {
+      const name = entry.split('=')[0];
+      if (name !== '_ga' && !name.startsWith('_ga_')) return;
+      domains.forEach(domain => paths.forEach(path => {
+        document.cookie = name + '=; Max-Age=0; Path=' + path +
+          (domain ? '; Domain=' + domain : '') + '; SameSite=Lax';
+      }));
+    });
+  };
+  const enableAnalytics = () => {
+    if (!analyticsAllowed || analyticsLoaded) return;
+    analyticsLoaded = true;
+    window['ga-disable-' + GA_ID] = false;
+    gtag('consent', 'update', {analytics_storage: 'granted',
+      ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied'});
+    gtag('js', new Date());
+    gtag('config', GA_ID, {
+      cookie_domain: window.location.hostname,
+      cookie_path: cookiePath,
+      cookie_expires: 15552000,
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false
+    });
+    const tag = document.createElement('script');
+    tag.async = true;
+    tag.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.append(tag);
+  };
+  const trackSiteEvent = (name, params = {}) => {
+    if (analyticsAllowed && analyticsLoaded) gtag('event', name, params);
+  };
   cookieNotice.hidden = validCookieChoice();
+  if (analyticsAllowed) enableAnalytics();
+  else clearAnalyticsCookies();
   cookieSettings.addEventListener('click', () => {
     openedFromSettings = true;
     cookieNotice.hidden = false;
     cookieStatus.textContent = '';
-    document.getElementById('cookieAccept').focus({ preventScroll: true });
+    document.getElementById('cookieAccept').focus({preventScroll: true});
   });
-  const saveCookieChoice = (choice) => {
+  const saveCookieChoice = choice => {
+    const wasEnabled = analyticsAllowed;
+    analyticsAllowed = choice === 'accepted';
+    window['ga-disable-' + GA_ID] = !analyticsAllowed;
     const secure = window.location.protocol === 'https:' ? '; Secure' : '';
-    document.cookie = cookieName + '=' + choice + '; Max-Age=15552000; Path=' + cookiePath + '; SameSite=Lax' + secure;
-    if (!validCookieChoice()) {
-      cookieStatus.textContent = 'Браузер не разрешает сохранить cookie. Ваш выбор применён для текущего просмотра.';
-      document.getElementById('cookieAccept').textContent = 'Закрыть';
-      document.getElementById('cookieAccept').onclick = () => {
-        cookieNotice.hidden = true;
-        cookieSettings.focus({ preventScroll: true });
-      };
-      return;
+    document.cookie = cookieName + '=' + choice + '; Max-Age=15552000; Path=' +
+      cookiePath + '; SameSite=Lax' + secure;
+    if (analyticsAllowed) enableAnalytics();
+    else {
+      if (analyticsLoaded) gtag('consent', 'update', {
+        analytics_storage: 'denied', ad_storage: 'denied',
+        ad_user_data: 'denied', ad_personalization: 'denied'
+      });
+      clearAnalyticsCookies();
     }
     cookieNotice.hidden = true;
-    if (openedFromSettings) cookieSettings.focus({ preventScroll: true });
+    if (openedFromSettings) cookieSettings.focus({preventScroll: true});
     openedFromSettings = false;
+    if (!validCookieChoice()) {
+      cookieNotice.hidden = false;
+      cookieStatus.textContent = 'Выбор применён для текущего просмотра. Браузер не разрешает сохранить его.';
+    }
+    // Reload removes already-loaded Google listeners after consent withdrawal.
+    if (wasEnabled && !analyticsAllowed && readCookieChoice() === 'necessary') window.location.reload();
   };
   document.getElementById('cookieAccept').addEventListener('click', () => saveCookieChoice('accepted'));
   document.getElementById('cookieNecessary').addEventListener('click', () => saveCookieChoice('necessary'));
+  document.addEventListener('click', event => {
+    const link = event.target.closest('a[href]');
+    if (!link) return;
+    if (link.matches('.steam-nick, .steam-avatar')) trackSiteEvent('steam_profile_click');
+    else if (link.href.startsWith('https://steamcommunity.com/groups/')) trackSiteEvent('steam_group_click');
+    else if (link.href.startsWith('https://discord.gg/')) trackSiteEvent('discord_click');
+    else if (link.getAttribute('href') === '#apply') trackSiteEvent('application_open');
+  });
 
   // Mobile menu toggle
   const navToggle = document.getElementById('navToggle');
@@ -832,6 +895,7 @@
       });
       const result = await response.json();
       if (!response.ok || result.ok !== true) throw new Error(result.message || 'Не удалось отправить анкету.');
+      trackSiteEvent('application_submitted');
       applyStatus.textContent = result.message;
       applyStatus.classList.add('ok');
       applyForm.reset();
