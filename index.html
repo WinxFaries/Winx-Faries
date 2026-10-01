@@ -383,6 +383,11 @@
   .player-verified{display:inline-flex;flex-shrink:0;vertical-align:middle;}
   .player-verified svg{width:20px;height:20px;}
   .verification-note{margin-top:20px;font-size:13px;color:var(--ivory-dim);max-width:700px;}
+  .player .nick{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+  .verification-button{border:0;padding:3px;background:none;cursor:pointer;border-radius:50%;color:inherit;}
+  .verification-button:hover{background:rgba(56,151,240,.15);}
+  .verification-message{margin-top:20px;padding:16px 20px;border:1px solid rgba(56,151,240,.4);border-radius:8px;background:rgba(56,151,240,.08);font-size:14px;}
+  .verification-message[hidden]{display:none;}
 </style>
 </head>
 <body>
@@ -487,34 +492,35 @@
       <span class="badge">КАПИТАН</span>
       <div class="num">01</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561199841835812/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль Bloom — новая вкладка"><span class="avatar-fallback" aria-hidden="true">B</span><img src="https://avatars.fastly.steamstatic.com/43db734201f3292e7a4c7501a1eed73911c59a74_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
-      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199841835812/" target="_blank" rel="noopener noreferrer">Bloom<span class="player-verified" title="Официальный игрок Winx Fairies" role="img" aria-label="Официальный игрок Winx Fairies"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div>
+      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199841835812/" target="_blank" rel="noopener noreferrer">Bloom</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Капитан состава</div>
     </div>
     <div class="player">
       <div class="num">02</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561198976219324/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль Tokinxiik — новая вкладка"><span class="avatar-fallback" aria-hidden="true">T</span><img src="https://avatars.fastly.steamstatic.com/5f96e65926fc80b1bd32172fad1861342aaa5c90_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
-      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561198976219324/" target="_blank" rel="noopener noreferrer">Tokinxiik<span class="player-verified" title="Официальный игрок Winx Fairies" role="img" aria-label="Официальный игрок Winx Fairies"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div>
+      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561198976219324/" target="_blank" rel="noopener noreferrer">Tokinxiik</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Штурмовой игрок</div>
     </div>
     <div class="player">
       <div class="num">03</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561199641226020/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль 12player — новая вкладка"><span class="avatar-fallback" aria-hidden="true">12</span><img src="https://avatars.fastly.steamstatic.com/6f45a88d243bbadb1c4e486e288a73badb76fa7d_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
-      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199641226020/" target="_blank" rel="noopener noreferrer">12player<span class="player-verified" title="Официальный игрок Winx Fairies" role="img" aria-label="Официальный игрок Winx Fairies"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div>
+      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199641226020/" target="_blank" rel="noopener noreferrer">12player</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Универсал</div>
     </div>
     <div class="player">
       <div class="num">04</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561198964101685/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль NeShkolar — новая вкладка"><span class="avatar-fallback" aria-hidden="true">N</span><img src="https://avatars.fastly.steamstatic.com/934c369197a22c858bf0e7c26d37fa24827c273e_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
-      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561198964101685/" target="_blank" rel="noopener noreferrer">NeShkolar<span class="player-verified" title="Официальный игрок Winx Fairies" role="img" aria-label="Официальный игрок Winx Fairies"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div>
+      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561198964101685/" target="_blank" rel="noopener noreferrer">NeShkolar</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Саппорт</div>
     </div>
     <div class="player">
       <div class="num">05</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561199771499987/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль Fouzer — новая вкладка"><span class="avatar-fallback" aria-hidden="true">F</span><img src="https://avatars.fastly.steamstatic.com/4be173e349ebcca4a47ac2f935d867dc27f8ea43_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
-      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199771499987/" target="_blank" rel="noopener noreferrer">Fouzer<span class="player-verified" title="Официальный игрок Winx Fairies" role="img" aria-label="Официальный игрок Winx Fairies"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div>
+      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199771499987/" target="_blank" rel="noopener noreferrer">Fouzer</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Снайпер</div>
     </div>
   </div>
+  <p class="verification-message" id="verificationMessage" role="status" hidden></p>
   <p class="verification-note">Синяя галочка отмечает официальных игроков Winx Fairies. Нажмите на ник или аватарку, чтобы открыть указанный командой Steam-профиль. Сверяйте ссылку на профиль: одинаковые ники и аватарки могут использовать другие люди.</p>
   <h3 class="reserve-heading">Запасной состав</h3>
   <div class="reserve-grid">
@@ -522,7 +528,7 @@
       <span class="badge">ЗАМЕНА</span>
       <div class="num">06</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561199132873486/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль Rox1n — новая вкладка"><span class="avatar-fallback" aria-hidden="true">R</span><img src="https://avatars.fastly.steamstatic.com/2f73908bab34ebb944a3f1035a9e032af2ca6568_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
-      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199132873486/" target="_blank" rel="noopener noreferrer">Rox1n<span class="player-verified" title="Официальный игрок Winx Fairies" role="img" aria-label="Официальный игрок Winx Fairies"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div>
+      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199132873486/" target="_blank" rel="noopener noreferrer">Rox1n</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Запасной игрок</div>
     </div>
   </div>
@@ -643,6 +649,24 @@
 </aside>
 
 <script>
+  const verificationMessage = document.getElementById('verificationMessage');
+  const verificationButtons = document.querySelectorAll('.verification-button');
+  const closeVerification = () => {
+    verificationMessage.hidden = true;
+    verificationButtons.forEach(button => button.setAttribute('aria-expanded', 'false'));
+  };
+  verificationButtons.forEach(button => button.addEventListener('click', () => {
+    const wasOpen = button.getAttribute('aria-expanded') === 'true';
+    closeVerification();
+    if (wasOpen) return;
+    const nick = button.closest('.nick').querySelector('.steam-nick').textContent.trim();
+    verificationMessage.textContent = nick + ' — официальный владелец указанного Steam-аккаунта. Отметка официального состава Winx Fairies выдана командой.';
+    verificationMessage.hidden = false;
+    button.setAttribute('aria-expanded', 'true');
+  }));
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeVerification();
+  });
   document.getElementById('cinemaPlay').addEventListener('click', () => {
     const player = document.createElement('iframe');
     player.title = 'IEM Katowice 2025 — официальный фрагмуви ESL';
