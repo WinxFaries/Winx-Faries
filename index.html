@@ -351,12 +351,26 @@
   .application-result .btn:focus-visible{outline:2px solid var(--crimson-lt);outline-offset:4px;}
   .application-trap{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
   #applicationConsent{width:auto;margin-right:8px;}
+  .cinema{background:linear-gradient(135deg,#1c0c0b,#0a0404);border-top:1px solid var(--line);}
+  .cinema-kicker{color:var(--crimson-lt);letter-spacing:3px;font-size:12px;margin-bottom:12px;}
+  .cinema h2{font:600 clamp(32px,5vw,64px)/1.1 var(--ff-head);margin-bottom:28px;}
+  .cinema-frame{position:relative;aspect-ratio:16/9;background:radial-gradient(ellipse at 70% 30%,#8a151f99,transparent 65%),linear-gradient(135deg,#231311,#0a0404);border:1px solid #e2495a55;overflow:hidden;box-shadow:0 24px 80px #0008;}
+  .cinema-poster{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding:20px;}
+  .cinema-title{font:700 clamp(36px,8vw,100px)/1 var(--ff-head);letter-spacing:2px;}
+  .cinema-title span{color:var(--crimson-lt);}
+  .cinema-play{cursor:pointer;}
+  .cinema-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .cinema-meta{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:18px;color:var(--ivory-dim);font-size:13px;}
+  .cinema-note{font-size:12px;color:var(--ivory-dim);max-width:520px;}
+  button:focus-visible,a:focus-visible{outline:2px solid var(--crimson-lt);outline-offset:5px;}
+  section[id]{scroll-margin-top:85px;}
+  @media(max-width:600px){.cinema-poster{gap:12px;}.cinema-note{font-size:11px;}.cinema-play{padding:10px 18px;}.hero{min-height:100svh;padding-top:110px;padding-bottom:100px;}}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
 </style>
 </head>
 <body>
 
 <div class="grain"></div>
-
 <header>
   <div class="brand">
     <div class="mark">W</div>
@@ -366,6 +380,7 @@
     <ul>
       <li><a href="#identity">Команда</a></li>
       <li><a href="#roster">Состав</a></li>
+      <li><a href="#highlights">Видео</a></li>
       <li><a href="#schedule">Матчи</a></li>
       <li><a href="#apply">Заявка</a></li>
       <li><a href="#contact">Контакты</a></li>
@@ -397,11 +412,19 @@
       идёт по знамени — спокойно, точно и до конца раунда.</p>
     <div class="hero-cta">
       <a href="#roster" class="btn btn-solid">Смотреть состав</a>
-      <a href="#schedule" class="btn btn-ghost">Ближайшие матчи</a>
+      <a href="#highlights" class="btn btn-ghost">▶ Смотреть CS2</a>
     </div>
   </div>
 
   <div class="scroll-hint"><span class="line"></span>ЛИСТАЙТЕ ВНИЗ</div>
+</section>
+
+<section class="cinema" id="highlights" aria-labelledby="cinemaTitle">
+  <p class="cinema-kicker">MATCHMAKING / PREMIER · CS2</p><h2 id="cinemaTitle">Каждый раунд — зрелище.</h2>
+  <div class="cinema-frame" id="cinemaFrame">
+    <div class="cinema-poster"><div class="cinema-title">PLAY <span>TO WIN.</span></div><button type="button" class="btn btn-solid cinema-play" id="cinemaPlay">▶ Смотреть CS2 Premier</button><p class="cinema-note">Запускается плеер YouTube. Звук и полный экран доступны в плеере.</p></div>
+  </div>
+  <div class="cinema-meta"><span>CS2 Premier · Solo Queueing · sn3ps__</span><a class="inline-link" href="https://www.youtube.com/watch?v=_mw-tlLmILE" target="_blank" rel="noopener noreferrer">Открыть на YouTube ↗</a></div>
 </section>
 
 <section class="identity" id="identity">
@@ -588,6 +611,17 @@
 </aside>
 
 <script>
+  document.getElementById('cinemaPlay').addEventListener('click', () => {
+    const player = document.createElement('iframe');
+    player.title = 'CS2 Premier — Solo Queueing, sn3ps__';
+    player.src = 'https://www.youtube-nocookie.com/embed/_mw-tlLmILE?autoplay=1&playsinline=1&rel=0';
+    player.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+    player.allowFullscreen = true;
+    player.referrerPolicy = 'strict-origin-when-cross-origin';
+    document.getElementById('cinemaFrame').replaceChildren(player);
+    player.focus();
+  });
+
   // Save only the visitor's cookie preference, scoped to this GitHub Pages site.
   const cookieNotice = document.getElementById('cookieNotice');
   const cookieSettings = document.getElementById('cookieSettings');
@@ -605,7 +639,7 @@
     openedFromSettings = true;
     cookieNotice.hidden = false;
     cookieStatus.textContent = '';
-    document.getElementById('cookieAccept').focus();
+    document.getElementById('cookieAccept').focus({ preventScroll: true });
   });
   const saveCookieChoice = (choice) => {
     const secure = window.location.protocol === 'https:' ? '; Secure' : '';
@@ -615,12 +649,13 @@
       document.getElementById('cookieAccept').textContent = 'Закрыть';
       document.getElementById('cookieAccept').onclick = () => {
         cookieNotice.hidden = true;
-        cookieSettings.focus();
+        cookieSettings.focus({ preventScroll: true });
       };
       return;
     }
     cookieNotice.hidden = true;
-    if (openedFromSettings || cookieNotice.contains(document.activeElement)) cookieSettings.focus();
+    if (openedFromSettings) cookieSettings.focus({ preventScroll: true });
+    openedFromSettings = false;
   };
   document.getElementById('cookieAccept').addEventListener('click', () => saveCookieChoice('accepted'));
   document.getElementById('cookieNecessary').addEventListener('click', () => saveCookieChoice('necessary'));
@@ -648,14 +683,26 @@
   const submitApplication = document.getElementById('submitApplication');
   let challengeId;
   let sending = false;
-  window.onApplicationChallengeReady = () => {
+  let applicationStarted = false;
+  const renderApplicationChallenge = () => {
+    if (!applicationStarted || challengeId !== undefined || !window.turnstile) return;
     challengeId = window.turnstile.render('#applicationChallenge', {
       sitekey: TURNSTILE_SITE_KEY, theme: 'dark', action: 'application'
     });
   };
+  window.onApplicationChallengeReady = renderApplicationChallenge;
+  // Start verification only when the visitor chooses to fill out the form.
+  // A challenge iframe must not take focus elsewhere during page loading.
+  const startApplication = () => {
+    applicationStarted = true;
+    renderApplicationChallenge();
+  };
+  applyForm.addEventListener('focusin', startApplication);
+  applyForm.addEventListener('pointerdown', startApplication);
   applyForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (sending) return;
+    startApplication();
     applyStatus.classList.remove('ok');
     if (!applyForm.reportValidity()) return;
     const values = new FormData(applyForm);
