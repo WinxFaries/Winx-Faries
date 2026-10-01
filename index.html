@@ -372,7 +372,7 @@
   .steam-community .btn{flex-shrink:0;text-align:center;}
   @media(max-width:600px){.steam-community{padding:22px;}.steam-community .btn{width:100%;}}
   .reserve-heading{margin:36px 0 18px;font-family:var(--ff-head);font-size:26px;font-weight:500;}
-  .reserve-grid{max-width:360px;border:1px solid var(--line);}
+  .reserve-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;max-width:720px;background:var(--line);border:1px solid var(--line);}
   .player .steam-avatar{position:relative;overflow:hidden;}
   .steam-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;}
   .steam-avatar img[hidden]{display:none;}
@@ -438,7 +438,7 @@
   <div class="hero-content">
     <div class="hero-eyebrow">Профессиональный дивизион · Counter-Strike 2</div>
     <h1 class="wordmark">Winx<span class="row2">Fairies</span></h1>
-    <p class="hero-sub">Шесть игроков, одна дисциплина. Мы выходим на карту так же, как дракон
+    <p class="hero-sub">Семь игроков, одна дисциплина. Мы выходим на карту так же, как дракон
       идёт по знамени — спокойно, точно и до конца раунда.</p>
     <div class="hero-cta">
       <a href="#roster" class="btn btn-solid">Смотреть состав</a>
@@ -468,7 +468,7 @@
         экономике. Форма и айдентика собраны в одном визуальном языке — от джерси
         до этой страницы.</p>
       <div class="identity-stats">
-        <div class="stat"><b>6</b><span>игроков в составе</span></div>
+        <div class="stat"><b>7</b><span>игроков в составе</span></div>
         <div class="stat"><b>2026</b><span>сезон формирования</span></div>
         <div class="stat"><b>CS2</b><span>основная дисциплина</span></div>
       </div>
@@ -492,7 +492,7 @@
 <section id="roster">
   <div class="section-head">
     <h2>Состав команды</h2>
-    <p>Шесть игроков под флагом Winx Fairies: пять в основном составе и один запасной.
+    <p>Семь игроков под флагом Winx Fairies: пять в основном составе и два запасных.
       Роли — под каждый матчап, ник — навсегда.</p>
   </div>
 
@@ -540,8 +540,15 @@
       <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199132873486/" target="_blank" rel="noopener noreferrer">Rox1n</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Запасной игрок</div>
     </div>
+    <div class="player">
+      <span class="badge">ЗАМЕНА</span>
+      <div class="num">07</div>
+      <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561198875581922/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль N1brA — новая вкладка"><span class="avatar-fallback" aria-hidden="true">N</span><img src="https://avatars.fastly.steamstatic.com/cc44449f5cbafc32b78ac16bc7a66036327566f8_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
+      <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561198875581922/" target="_blank" rel="noopener noreferrer">N1brA</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+      <div class="role">Запасной игрок</div>
+    </div>
   </div>
-  <p class="roster-note">Rox1n готов выйти на замену в случае непредвиденных ситуаций.
+  <p class="roster-note">Rox1n и N1brA готовы выйти на замену в случае непредвиденных ситуаций.
     Хотите присоединиться к команде? <a href="#apply" class="inline-link">Подать заявку</a>.</p>
 </section>
 
