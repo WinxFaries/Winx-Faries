@@ -393,6 +393,9 @@
   .tournament-poster .cinema-title{font-size:clamp(28px,5.5vw,72px);text-shadow:0 2px 20px #000;}
   .tournament-label{font-size:11px;letter-spacing:2px;color:var(--ivory);}
   @media(max-width:600px){.tournament-poster{gap:8px;padding:16px;}.tournament-label{font-size:9px;letter-spacing:1px;}.tournament-poster .cinema-title{font-size:clamp(24px,6vw,36px);}.tournament-poster .cinema-note{display:none;}}
+  .cinema-frame{max-width:1280px;margin-inline:auto;}
+  .cinema-meta{max-width:1280px;margin-inline:auto;}
+  .tournament-preview[hidden]{display:none;}
 </style>
 </head>
 <body>
@@ -449,7 +452,7 @@
 <section class="cinema" id="highlights" aria-labelledby="cinemaTitle">
   <p class="cinema-kicker">IEM KATOWICE 2025 · CS2</p><h2 id="cinemaTitle">Каждый раунд — зрелище.</h2>
   <div class="cinema-frame" id="cinemaFrame">
-    <img class="tournament-preview" src="https://i.ytimg.com/vi/huHWDPMeXA0/hqdefault.jpg" alt="Превью официального фрагмуви IEM Katowice 2025 от ESL Counter-Strike" width="480" height="360" loading="lazy" decoding="async">
+    <img class="tournament-preview" src="https://i.ytimg.com/vi/huHWDPMeXA0/maxresdefault.jpg" alt="Превью официального фрагмуви IEM Katowice 2025 от ESL Counter-Strike" width="1280" height="720" loading="lazy" decoding="async">
     <div class="cinema-poster tournament-poster"><span class="tournament-label">ESL COUNTER-STRIKE · OFFICIAL FRAGMOVIE</span><div class="cinema-title">IEM KATOWICE <span>2025</span></div><button type="button" class="btn btn-solid cinema-play" id="cinemaPlay" aria-label="Смотреть официальный фрагмуви IEM Katowice 2025">▶ Смотреть лучшие моменты</button><p class="cinema-note">Лучшие моменты турнира CS2 · звук и полный экран в плеере</p></div>
   </div>
   <div class="cinema-meta"><span>IEM Katowice 2025 · официальный фрагмуви ESL</span><a class="inline-link" href="https://www.youtube.com/watch?v=huHWDPMeXA0" target="_blank" rel="noopener noreferrer">Открыть на YouTube ↗</a></div>
@@ -655,6 +658,29 @@
 </aside>
 
 <script>
+  const tournamentPreview = document.querySelector('.tournament-preview');
+  if (tournamentPreview) {
+    const previewSources = [
+      'https://i.ytimg.com/vi/huHWDPMeXA0/sddefault.jpg',
+      'https://i.ytimg.com/vi/huHWDPMeXA0/hqdefault.jpg'
+    ];
+    let previewFallback = 0;
+    const usePreviewFallback = () => {
+      if (previewFallback < previewSources.length) {
+        tournamentPreview.src = previewSources[previewFallback++];
+      } else {
+        tournamentPreview.hidden = true;
+      }
+    };
+    tournamentPreview.addEventListener('error', usePreviewFallback);
+    tournamentPreview.addEventListener('load', () => {
+      if (tournamentPreview.naturalWidth < 300) usePreviewFallback();
+    });
+    if (tournamentPreview.complete &&
+        (tournamentPreview.naturalWidth === 0 || tournamentPreview.naturalWidth < 300)) {
+      usePreviewFallback();
+    }
+  }
   const verificationMessage = document.getElementById('verificationMessage');
   const verificationButtons = document.querySelectorAll('.verification-button');
   const closeVerification = () => {
