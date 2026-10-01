@@ -342,6 +342,15 @@
     .cookie-notice{left:12px;right:12px;bottom:12px;padding:18px;}
     .cookie-actions .btn{width:100%;text-align:center;}
   }
+
+  .application-result{max-width:760px;margin-top:32px;padding:24px;background:var(--panel);border:1px solid var(--line);}
+  .application-result[hidden]{display:none;}
+  .application-result .apply-actions{margin:18px 0 12px;}
+  .application-result button{cursor:pointer;}
+  .application-result textarea{width:100%;}
+  .application-result .btn:focus-visible{outline:2px solid var(--crimson-lt);outline-offset:4px;}
+  .application-trap{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+  #applicationConsent{width:auto;margin-right:8px;}
 </style>
 </head>
 <body>
@@ -495,19 +504,17 @@
 <section class="apply" id="apply">
   <div class="section-head">
     <h2>Подать заявку на замену</h2>
-    <p>Ищем игрока в ростер на позицию замены. Заполните форму — заявка
-      сформируется в виде письма на нашу почту, останется только отправить его
-      из вашего почтового клиента.</p>
+    <p>Заполните анкету — она будет отправлена администрации команды в Discord. Ответ придёт на указанный вами аккаунт Discord.</p>
   </div>
 
   <form class="apply-form" id="applyForm" novalidate>
     <div class="field">
       <label for="f-nick">Ник в игре</label>
-      <input type="text" id="f-nick" name="nick" required placeholder="Например, Fouzer">
+      <input type="text" id="f-nick" name="nick" maxlength="60" required placeholder="Например, Fouzer">
     </div>
     <div class="field">
-      <label for="f-contact">Контакт (Telegram / Discord)</label>
-      <input type="text" id="f-contact" name="contact" required placeholder="@username">
+      <label for="f-contact">Ваш ник в Discord</label>
+      <input type="text" id="f-contact" name="contact" maxlength="80" required placeholder="Ваш username в Discord">
     </div>
     <div class="field">
       <label for="f-role">Желаемая роль</label>
@@ -521,14 +528,22 @@
     </div>
     <div class="field">
       <label for="f-rank">Рейтинг / ранг</label>
-      <input type="text" id="f-rank" name="rank" placeholder="Например, Faceit 9">
+      <input type="text" id="f-rank" name="rank" maxlength="100" placeholder="Например, Faceit 9">
     </div>
     <div class="field field-wide">
       <label for="f-msg">О себе</label>
-      <textarea id="f-msg" name="msg" rows="4" placeholder="Опыт, достижения, часы онлайн, почему хотите к нам"></textarea>
+      <textarea id="f-msg" name="msg" maxlength="1000" rows="4" placeholder="Опыт, достижения, часы онлайн, почему хотите к нам"></textarea>
+    </div>
+    <div class="field field-wide">
+      <label><input type="checkbox" id="applicationConsent" required> Согласен передать данные анкеты администрации команды через Cloudflare и Discord для рассмотрения заявки.</label>
+      <div id="applicationChallenge"></div>
+      <p class="apply-status">Не указывайте пароли и секретные данные. <a class="inline-link" href="https://discord.gg/jVRb5RAu" target="_blank" rel="noopener noreferrer">Связаться в Discord ↗</a></p>
+    </div>
+    <div class="application-trap" aria-hidden="true">
+      <input type="text" name="website" tabindex="-1" autocomplete="off" aria-label="Website">
     </div>
     <div class="field field-wide apply-actions">
-      <button type="submit" class="btn btn-solid">Отправить заявку</button>
+      <button type="submit" class="btn btn-solid" id="submitApplication">Отправить анкету в Discord</button>
       <span class="apply-status" id="applyStatus" role="status" aria-live="polite"></span>
     </div>
   </form>
@@ -550,7 +565,7 @@
       <h4>Связь</h4>
       <a href="#">Telegram</a>
       <a href="#">Twitch</a>
-      <a href="#">Discord</a>
+      <a href="https://discord.gg/jVRb5RAu" target="_blank" rel="noopener noreferrer">Discord ↗</a>
     </div>
   </div>
   <div class="footer-bottom">
@@ -626,48 +641,75 @@
     });
   });
 
-  // Application form -> opens the visitor's email client with a prefilled message.
-  // Replace TEAM_EMAIL with the address you actually want applications sent to.
-  const TEAM_EMAIL = 'apply@winxfairies.gg';
-
+  const APPLICATION_API_URL = 'https://winx-applications.gnezdilovmaksim407.workers.dev/apply';
+  const TURNSTILE_SITE_KEY = '0x4AAAAAAFLJtIBZskBk7PLd';
   const applyForm = document.getElementById('applyForm');
   const applyStatus = document.getElementById('applyStatus');
-
-  applyForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const nick = applyForm.nick.value.trim();
-    const contact = applyForm.contact.value.trim();
-
+  const submitApplication = document.getElementById('submitApplication');
+  let challengeId;
+  let sending = false;
+  window.onApplicationChallengeReady = () => {
+    challengeId = window.turnstile.render('#applicationChallenge', {
+      sitekey: TURNSTILE_SITE_KEY, theme: 'dark', action: 'application'
+    });
+  };
+  applyForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (sending) return;
+    applyStatus.classList.remove('ok');
+    if (!applyForm.reportValidity()) return;
+    const values = new FormData(applyForm);
+    const nick = String(values.get('nick') || '').trim();
+    const contact = String(values.get('contact') || '').trim();
     if (!nick || !contact) {
-      applyStatus.textContent = 'Заполните ник и контакт, чтобы отправить заявку.';
-      applyStatus.classList.remove('ok');
+      applyStatus.textContent = 'Заполните ник в игре и ваш ник в Discord.';
       return;
     }
-
-    const role = applyForm.role.value;
-    const rank = applyForm.rank.value.trim() || '—';
-    const msg = applyForm.msg.value.trim() || '—';
-
-    const subject = `Заявка на замену — ${nick}`;
-    const body =
-      `Ник: ${nick}\n` +
-      `Контакт: ${contact}\n` +
-      `Роль: ${role}\n` +
-      `Рейтинг: ${rank}\n\n` +
-      `О себе:\n${msg}`;
-
-    const mailtoLink =
-      `mailto:${TEAM_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-    window.location.href = mailtoLink;
-
-    applyStatus.textContent = 'Открываем почтовый клиент — останется нажать «Отправить».';
-    applyStatus.classList.add('ok');
-    applyForm.reset();
+    const token = challengeId !== undefined && window.turnstile ? window.turnstile.getResponse(challengeId) : '';
+    if (!token) {
+      applyStatus.textContent = 'Пройдите проверку перед отправкой. Если она не появилась, обновите страницу.';
+      return;
+    }
+    const payload = {
+      nick, contact,
+      role: String(values.get('role') || ''),
+      rank: String(values.get('rank') || '').trim(),
+      msg: String(values.get('msg') || '').trim(),
+      consent: document.getElementById('applicationConsent').checked,
+      website: String(values.get('website') || ''),
+      token
+    };
+    sending = true;
+    submitApplication.disabled = true;
+    submitApplication.textContent = 'Отправляем…';
+    applyStatus.textContent = 'Отправляем анкету в Discord…';
+    try {
+      const response = await fetch(APPLICATION_API_URL, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
+      if (!response.ok || result.ok !== true) throw new Error(result.message || 'Не удалось отправить анкету.');
+      applyStatus.textContent = result.message;
+      applyStatus.classList.add('ok');
+      applyForm.reset();
+    } catch (error) {
+      applyStatus.textContent = error instanceof TypeError
+        ? 'Не удалось подтвердить доставку. Уточните у администрации в Discord перед повторной отправкой.'
+        : error.message;
+    } finally {
+      sending = false;
+      submitApplication.disabled = false;
+      submitApplication.textContent = 'Отправить анкету в Discord';
+      if (challengeId !== undefined && window.turnstile) window.turnstile.reset(challengeId);
+    }
   });
 </script>
 
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onApplicationChallengeReady&render=explicit" async defer></script>
 </body>
 </html>
+
+
+
 
