@@ -535,8 +535,8 @@
 .theme-ember .cover-code{z-index:1;}
 
 /* Tokinxiik: original purple fire ring, gently distorted into moving flames. */
-.theme-ember .avatar{overflow:visible;isolation:isolate;border-color:#c575f5;box-shadow:0 0 8px #bb53ed44;}
-.theme-ember .avatar::before{display:block;inset:-17px;padding:0;border:0;border-radius:50%;background:url("https://i.pinimg.com/originals/ce/f5/97/cef597e7b7293094474b4bbc339a9eb5.jpg") center/cover no-repeat;mask:none;-webkit-mask:none;mix-blend-mode:screen;z-index:3;pointer-events:none;filter:url(#tokinFlameWarp);animation:tokinFireGlow 3.2s ease-in-out infinite;transform:none;}
+.theme-ember .avatar{overflow:hidden;isolation:isolate;border:0;box-shadow:none;}
+.theme-ember .avatar::before{display:block;inset:0;padding:0;border:0;border-radius:50%;background:url("https://i.pinimg.com/originals/ce/f5/97/cef597e7b7293094474b4bbc339a9eb5.jpg") center/cover no-repeat;mask:none;-webkit-mask:none;mix-blend-mode:screen;z-index:3;pointer-events:none;filter:url(#tokinFlameWarp);animation:tokinFireGlow 3.2s ease-in-out infinite;transform:none;}
 .theme-ember .avatar::after{display:none;}
 .theme-ember .avatar>img{position:absolute;inset:0;width:100%;height:100%;z-index:1;}
 .theme-ember .avatar>.avatar-fallback{position:relative;z-index:0;}
