@@ -534,15 +534,11 @@
 .theme-ember .player-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#08061018,#08061055 42%,#080610ed 88%);}
 .theme-ember .cover-code{z-index:1;}
 
-/* Tokinxiik: animated terminal overlay fitted to the unchanged 76px avatar. */
-.theme-ember .avatar{overflow:visible;isolation:isolate;border-color:#e34458;box-shadow:0 0 0 1px #ec425855,0 0 12px #cf294533;}
-.theme-ember .avatar::before{display:none;}
-.theme-ember .avatar::after{inset:-5px;border:0;border-radius:12px;background:linear-gradient(#fb5165,#fb5165) left top/12px 2px,linear-gradient(#fb5165,#fb5165) left top/2px 12px,linear-gradient(#60dcff,#60dcff) right top/12px 2px,linear-gradient(#60dcff,#60dcff) right top/2px 12px,linear-gradient(#60dcff,#60dcff) left bottom/12px 2px,linear-gradient(#60dcff,#60dcff) left bottom/2px 12px,linear-gradient(#fb5165,#fb5165) right bottom/12px 2px,linear-gradient(#fb5165,#fb5165) right bottom/2px 12px;background-repeat:no-repeat;box-shadow:none;animation:tokinHudPulse 5s ease-in-out infinite;pointer-events:none;z-index:4;}
-.tokin-avatar-hud{position:absolute;inset:-6px;z-index:3;pointer-events:none;border-radius:12px;overflow:hidden;mix-blend-mode:screen;mask:radial-gradient(circle closest-side,transparent 55%,#000 69%);-webkit-mask:radial-gradient(circle closest-side,transparent 55%,#000 69%);}
-.tokin-frame-video{width:100%;height:100%;object-fit:cover;filter:brightness(1.8) saturate(.9);opacity:.85;}
-@keyframes tokinHudPulse{0%,100%{opacity:.55;}45%,55%{opacity:1;}}
-.theme-ember.motion-paused .avatar::after{animation-play-state:paused;}
-@media(prefers-reduced-motion:reduce){.theme-ember .avatar::after{animation:none;}}
+/* Tokinxiik: original supplied animation, scaled without recoloring. */
+.theme-ember .avatar{overflow:visible;isolation:isolate;border-color:#b42a31;box-shadow:none;}
+.theme-ember .avatar::before,.theme-ember .avatar::after{display:none;}
+.tokin-avatar-hud{position:absolute;inset:-6px;z-index:3;pointer-events:none;border-radius:0;overflow:hidden;mask:radial-gradient(circle closest-side,transparent 73%,#000 76%);-webkit-mask:radial-gradient(circle closest-side,transparent 73%,#000 76%);}
+.tokin-frame-video{display:block;width:100%;height:100%;object-fit:contain;filter:none;opacity:1;}
 </style>
 </head>
 <body>
