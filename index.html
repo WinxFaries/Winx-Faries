@@ -534,15 +534,15 @@
 .theme-ember .player-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#08061018,#08061055 42%,#080610ed 88%);}
 .theme-ember .cover-code{z-index:1;}
 
-/* Tokinxiik: original purple fire ring, gently distorted into moving flames. */
+/* Tokinxiik: fire ring aligned with the avatar perimeter, face kept clear. */
 .theme-ember .avatar{overflow:hidden;isolation:isolate;border:0;box-shadow:none;}
-.theme-ember .avatar::before{display:block;inset:0;padding:0;border:0;border-radius:50%;background:url("https://i.pinimg.com/originals/ce/f5/97/cef597e7b7293094474b4bbc339a9eb5.jpg") center/cover no-repeat;mask:none;-webkit-mask:none;mix-blend-mode:screen;z-index:3;pointer-events:none;filter:url(#tokinFlameWarp);animation:tokinFireGlow 3.2s ease-in-out infinite;transform:none;}
-.theme-ember .avatar::after{display:none;}
+.theme-ember .avatar::before{display:block;inset:0;padding:0;border:0;border-radius:50%;background:url("https://i.pinimg.com/originals/ce/f5/97/cef597e7b7293094474b4bbc339a9eb5.jpg") center/auto 132% no-repeat;mask:radial-gradient(circle closest-side,transparent 54%,#000 66%);-webkit-mask:radial-gradient(circle closest-side,transparent 54%,#000 66%);mix-blend-mode:screen;z-index:3;pointer-events:none;filter:url(#tokinFlameWarp) brightness(1.35);animation:tokinFireGlow 3.2s ease-in-out infinite;transform:none;}
+.theme-ember .avatar::after{display:block;inset:1px;border:1px solid #d791fc88;border-radius:50%;background:none;box-shadow:inset 0 0 3px #c06bee55;z-index:2;pointer-events:none;animation:none;}
 .theme-ember .avatar>img{position:absolute;inset:0;width:100%;height:100%;z-index:1;}
 .theme-ember .avatar>.avatar-fallback{position:relative;z-index:0;}
-@keyframes tokinFireGlow{0%,100%{opacity:.8;}23%{opacity:1;}47%{opacity:.85;}72%{opacity:.98;}}
-.theme-ember.motion-paused .avatar::before{animation-play-state:paused;filter:none;}
-@media(prefers-reduced-motion:reduce){.theme-ember .avatar::before{animation:none;filter:none;}}
+@keyframes tokinFireGlow{0%,100%{opacity:.9;}23%{opacity:1;}47%{opacity:.92;}72%{opacity:1;}}
+.theme-ember.motion-paused .avatar::before{animation-play-state:paused;filter:brightness(1.35);}
+@media(prefers-reduced-motion:reduce){.theme-ember .avatar::before{animation:none;filter:brightness(1.35);}}
 </style>
 </head>
 <body>
