@@ -408,6 +408,38 @@
   .roster-tabs button[aria-selected="true"]{background:var(--crimson);border-color:var(--crimson);color:var(--ivory);}
   .statistics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);}
   #lineupPanel[hidden],#statisticsPanel[hidden]{display:none;}
+  /* Individual CSS artwork keeps player cards sharp at every size. */
+  .roster-grid,.statistics-grid{gap:18px;background:transparent;border:0;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));}
+  .reserve-grid{gap:18px;background:transparent;border:0;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));}
+  .player-custom{--accent:#ed526b;--accent-rgb:237,82,107;isolation:isolate;overflow:hidden;border:1px solid rgba(var(--accent-rgb),.28);border-radius:14px;padding:30px 24px 26px;background:linear-gradient(165deg,rgba(var(--accent-rgb),.12),transparent 55%),#100c10;box-shadow:0 16px 36px rgba(0,0,0,.2);transition:transform .25s,border-color .25s,box-shadow .25s;}
+  .player-custom:hover{transform:translateY(-5px);border-color:rgba(var(--accent-rgb),.65);box-shadow:0 20px 45px rgba(var(--accent-rgb),.12);background-color:#151016;}
+  .theme-crimson{--accent:#ff526c;--accent-rgb:255,82,108;}
+  .theme-ember{--accent:#ff8f3c;--accent-rgb:255,143,60;}
+  .theme-violet{--accent:#b192ff;--accent-rgb:177,146,255;}
+  .theme-teal{--accent:#52d6b7;--accent-rgb:82,214,183;}
+  .theme-ice{--accent:#73c9ff;--accent-rgb:115,201,255;}
+  .theme-amber{--accent:#eac56a;--accent-rgb:234,197,106;}
+  .theme-rose{--accent:#f07acb;--accent-rgb:240,122,203;}
+  .player-cover{position:absolute;inset:0 0 auto;height:165px;z-index:-1;background:radial-gradient(ellipse at 80% 15%,rgba(var(--accent-rgb),.40),transparent 65%),repeating-linear-gradient(135deg,transparent 0 24px,rgba(var(--accent-rgb),.06) 25px 26px),linear-gradient(180deg,#211923,transparent);mask-image:linear-gradient(#000 60%,transparent);}
+  .player-cover:after{content:'';position:absolute;inset:18px 16px;border-top:1px solid rgba(var(--accent-rgb),.35);border-right:1px solid rgba(var(--accent-rgb),.35);transform:skew(-12deg);}
+  .cover-orbit{position:absolute;width:170px;height:170px;right:-35px;top:-38px;border:1px solid rgba(var(--accent-rgb),.45);border-radius:50%;box-shadow:0 0 0 18px rgba(var(--accent-rgb),.05),0 0 0 42px rgba(var(--accent-rgb),.03);}
+  .cover-crosshair{position:absolute;right:45px;top:50px;width:35px;height:35px;background:linear-gradient(var(--accent),var(--accent)) center/1px 100% no-repeat,linear-gradient(var(--accent),var(--accent)) center/100% 1px no-repeat;opacity:.5;}
+  .cover-code{position:absolute;right:22px;top:112px;font-size:9px;letter-spacing:3px;color:var(--accent);opacity:.75;}
+  .theme-ember .cover-orbit,.theme-amber .cover-orbit{border-radius:12px;transform:rotate(35deg);}
+  .theme-teal .player-cover{background:repeating-linear-gradient(0deg,transparent 0 20px,rgba(var(--accent-rgb),.12) 21px 22px),repeating-linear-gradient(90deg,transparent 0 20px,rgba(var(--accent-rgb),.08) 21px 22px),radial-gradient(ellipse at top right,rgba(var(--accent-rgb),.35),transparent);}
+  .theme-violet .cover-orbit{width:210px;height:90px;top:24px;right:-60px;transform:rotate(-40deg);}
+  .theme-ice .cover-orbit{border-radius:0;width:135px;height:135px;transform:rotate(45deg);right:-15px;top:-55px;}
+  .theme-rose .player-cover{background:radial-gradient(circle at 75% 20%,rgba(var(--accent-rgb),.4),transparent 55%),repeating-linear-gradient(-35deg,transparent 0 12px,rgba(var(--accent-rgb),.09) 13px 14px);}
+  .player-custom .num{font-size:40px;-webkit-text-stroke:1px rgba(var(--accent-rgb),.5);}
+  .player-style-label{font-size:9px;letter-spacing:1.4px;color:var(--accent);margin-top:10px;}
+  .player-custom .avatar{width:76px;height:76px;border:2px solid var(--accent);box-shadow:0 0 0 5px rgba(var(--accent-rgb),.09);margin-top:24px;background:#171117;color:var(--accent);}
+  .player-custom .badge{background:#100c10;border-color:var(--accent);color:var(--accent);font-size:9px;right:20px;top:28px;}
+  .player-custom .nick{font-size:23px;}
+  .player-custom .steam-nick:hover,.player-custom .stats-source{color:var(--accent);}
+  .player-custom .role{font-size:12px;}
+  .player-custom .player-stats{border-color:rgba(var(--accent-rgb),.2);}
+  .player-custom .player-stats dd{color:var(--accent);font-size:24px;}
+  @media(prefers-reduced-motion:reduce){.player-custom:hover{transform:none;}}
 </style>
 </head>
 <body>
@@ -515,37 +547,42 @@
   </div>
   <div id="lineupPanel" role="tabpanel" aria-labelledby="lineupTab">
   <div class="roster-grid">
-    <div class="player captain">
+    <div class="player captain player-custom theme-crimson">
       <span class="badge">КАПИТАН</span>
-      <div class="num">01</div>
+      <div class="player-cover" aria-hidden="true"><span class="cover-crosshair"></span><span class="cover-orbit"></span><span class="cover-code">WINX / CS2</span></div><div class="num">01</div>
+      <div class="player-style-label">КАПИТАН · ЛИДЕРСТВО</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561199841835812/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль Bloom — новая вкладка"><span class="avatar-fallback" aria-hidden="true">B</span><img src="https://avatars.fastly.steamstatic.com/43db734201f3292e7a4c7501a1eed73911c59a74_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
       <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199841835812/" target="_blank" rel="noopener noreferrer">Bloom</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Капитан состава</div>
       
     </div>
-    <div class="player">
-      <div class="num">02</div>
+    <div class="player player-custom theme-ember">
+      <div class="player-cover" aria-hidden="true"><span class="cover-crosshair"></span><span class="cover-orbit"></span><span class="cover-code">WINX / CS2</span></div><div class="num">02</div>
+      <div class="player-style-label">ENTRY · ТЕМП</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561198976219324/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль Tokinxiik — новая вкладка"><span class="avatar-fallback" aria-hidden="true">T</span><img src="https://avatars.fastly.steamstatic.com/5f96e65926fc80b1bd32172fad1861342aaa5c90_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
       <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561198976219324/" target="_blank" rel="noopener noreferrer">Tokinxiik</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Штурмовой игрок</div>
       
     </div>
-    <div class="player">
-      <div class="num">03</div>
+    <div class="player player-custom theme-violet">
+      <div class="player-cover" aria-hidden="true"><span class="cover-crosshair"></span><span class="cover-orbit"></span><span class="cover-code">WINX / CS2</span></div><div class="num">03</div>
+      <div class="player-style-label">FLEX · АДАПТАЦИЯ</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561199132873486/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль Rox1n — новая вкладка"><span class="avatar-fallback" aria-hidden="true">R</span><img src="https://avatars.fastly.steamstatic.com/2f73908bab34ebb944a3f1035a9e032af2ca6568_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
       <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199132873486/" target="_blank" rel="noopener noreferrer">Rox1n</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Универсал</div>
       
     </div>
-    <div class="player">
-      <div class="num">04</div>
+    <div class="player player-custom theme-teal">
+      <div class="player-cover" aria-hidden="true"><span class="cover-crosshair"></span><span class="cover-orbit"></span><span class="cover-code">WINX / CS2</span></div><div class="num">04</div>
+      <div class="player-style-label">SUPPORT · КОНТРОЛЬ</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561198964101685/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль NeShkolar — новая вкладка"><span class="avatar-fallback" aria-hidden="true">N</span><img src="https://avatars.fastly.steamstatic.com/934c369197a22c858bf0e7c26d37fa24827c273e_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
       <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561198964101685/" target="_blank" rel="noopener noreferrer">NeShkolar</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Саппорт</div>
       
     </div>
-    <div class="player">
-      <div class="num">05</div>
+    <div class="player player-custom theme-ice">
+      <div class="player-cover" aria-hidden="true"><span class="cover-crosshair"></span><span class="cover-orbit"></span><span class="cover-code">WINX / CS2</span></div><div class="num">05</div>
+      <div class="player-style-label">AWP · ТОЧНОСТЬ</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561199771499987/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль Fouzer — новая вкладка"><span class="avatar-fallback" aria-hidden="true">F</span><img src="https://avatars.fastly.steamstatic.com/4be173e349ebcca4a47ac2f935d867dc27f8ea43_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
       <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199771499987/" target="_blank" rel="noopener noreferrer">Fouzer</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Снайпер</div>
@@ -555,17 +592,19 @@
   <p class="verification-note">Синяя галочка отмечает официальных игроков Winx Fairies. Нажмите на ник или аватарку, чтобы открыть указанный командой Steam-профиль. Сверяйте ссылку на профиль: одинаковые ники и аватарки могут использовать другие люди.</p>
   <h3 class="reserve-heading">Запасной состав</h3>
   <div class="reserve-grid">
-    <div class="player">
+    <div class="player player-custom theme-amber">
       <span class="badge">ЗАМЕНА</span>
-      <div class="num">06</div>
+      <div class="player-cover" aria-hidden="true"><span class="cover-crosshair"></span><span class="cover-orbit"></span><span class="cover-code">WINX / CS2</span></div><div class="num">06</div>
+      <div class="player-style-label">RESERVE · ГОТОВНОСТЬ</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561199641226020/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль 12player — новая вкладка"><span class="avatar-fallback" aria-hidden="true">12</span><img src="https://avatars.fastly.steamstatic.com/6f45a88d243bbadb1c4e486e288a73badb76fa7d_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
       <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199641226020/" target="_blank" rel="noopener noreferrer">12player</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Запасной игрок</div>
       
     </div>
-    <div class="player">
+    <div class="player player-custom theme-rose">
       <span class="badge">ЗАМЕНА</span>
-      <div class="num">07</div>
+      <div class="player-cover" aria-hidden="true"><span class="cover-crosshair"></span><span class="cover-orbit"></span><span class="cover-code">WINX / CS2</span></div><div class="num">07</div>
+      <div class="player-style-label">RESERVE · ЭНЕРГИЯ</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561198875581922/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль N1brA — новая вкладка"><span class="avatar-fallback" aria-hidden="true">N</span><img src="https://avatars.fastly.steamstatic.com/cc44449f5cbafc32b78ac16bc7a66036327566f8_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
       <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561198875581922/" target="_blank" rel="noopener noreferrer">N1brA</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Запасной игрок</div>
@@ -577,9 +616,10 @@
   </div>
   <div id="statisticsPanel" role="tabpanel" aria-labelledby="statisticsTab" hidden>
     <p class="stats-disclaimer">Статистика CS2 5v5 по матчам, записанным CSStats. Проверено 03.10.2026. История может быть неполной; данные обновлены вручную и не отражают все сыгранные матчи. Это не показатели FACEIT. Актуальные значения доступны по ссылке под карточкой.</p>
-    <div class="statistics-grid"><div class="player captain">
+    <div class="statistics-grid"><div class="player captain player-custom theme-crimson">
       <span class="badge">КАПИТАН</span>
-      <div class="num">01</div>
+      <div class="player-cover" aria-hidden="true"><span class="cover-crosshair"></span><span class="cover-orbit"></span><span class="cover-code">WINX / CS2</span></div><div class="num">01</div>
+      <div class="player-style-label">КАПИТАН · ЛИДЕРСТВО</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561199841835812/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль Bloom — новая вкладка"><span class="avatar-fallback" aria-hidden="true">B</span><img src="https://avatars.fastly.steamstatic.com/43db734201f3292e7a4c7501a1eed73911c59a74_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
       <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199841835812/" target="_blank" rel="noopener noreferrer">Bloom</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Капитан состава</div>
@@ -588,8 +628,9 @@
         <a class="stats-source" href="https://csstats.gg/player/76561199841835812" target="_blank" rel="noopener noreferrer">Статистика CSStats ↗</a>
       </div>
     </div>
-<div class="player">
-      <div class="num">02</div>
+<div class="player player-custom theme-ember">
+      <div class="player-cover" aria-hidden="true"><span class="cover-crosshair"></span><span class="cover-orbit"></span><span class="cover-code">WINX / CS2</span></div><div class="num">02</div>
+      <div class="player-style-label">ENTRY · ТЕМП</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561198976219324/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль Tokinxiik — новая вкладка"><span class="avatar-fallback" aria-hidden="true">T</span><img src="https://avatars.fastly.steamstatic.com/5f96e65926fc80b1bd32172fad1861342aaa5c90_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
       <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561198976219324/" target="_blank" rel="noopener noreferrer">Tokinxiik</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Штурмовой игрок</div>
@@ -598,8 +639,9 @@
         <a class="stats-source" href="https://csstats.gg/player/76561198976219324" target="_blank" rel="noopener noreferrer">Статистика CSStats ↗</a>
       </div>
     </div>
-<div class="player">
-      <div class="num">03</div>
+<div class="player player-custom theme-violet">
+      <div class="player-cover" aria-hidden="true"><span class="cover-crosshair"></span><span class="cover-orbit"></span><span class="cover-code">WINX / CS2</span></div><div class="num">03</div>
+      <div class="player-style-label">FLEX · АДАПТАЦИЯ</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561199132873486/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль Rox1n — новая вкладка"><span class="avatar-fallback" aria-hidden="true">R</span><img src="https://avatars.fastly.steamstatic.com/2f73908bab34ebb944a3f1035a9e032af2ca6568_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
       <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199132873486/" target="_blank" rel="noopener noreferrer">Rox1n</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Универсал</div>
@@ -608,8 +650,9 @@
         <a class="stats-source" href="https://csstats.gg/player/76561199132873486" target="_blank" rel="noopener noreferrer">Статистика CSStats ↗</a>
       </div>
     </div>
-<div class="player">
-      <div class="num">04</div>
+<div class="player player-custom theme-teal">
+      <div class="player-cover" aria-hidden="true"><span class="cover-crosshair"></span><span class="cover-orbit"></span><span class="cover-code">WINX / CS2</span></div><div class="num">04</div>
+      <div class="player-style-label">SUPPORT · КОНТРОЛЬ</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561198964101685/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль NeShkolar — новая вкладка"><span class="avatar-fallback" aria-hidden="true">N</span><img src="https://avatars.fastly.steamstatic.com/934c369197a22c858bf0e7c26d37fa24827c273e_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
       <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561198964101685/" target="_blank" rel="noopener noreferrer">NeShkolar</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Саппорт</div>
@@ -618,8 +661,9 @@
         <a class="stats-source" href="https://csstats.gg/player/76561198964101685" target="_blank" rel="noopener noreferrer">Статистика CSStats ↗</a>
       </div>
     </div>
-<div class="player">
-      <div class="num">05</div>
+<div class="player player-custom theme-ice">
+      <div class="player-cover" aria-hidden="true"><span class="cover-crosshair"></span><span class="cover-orbit"></span><span class="cover-code">WINX / CS2</span></div><div class="num">05</div>
+      <div class="player-style-label">AWP · ТОЧНОСТЬ</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561199771499987/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль Fouzer — новая вкладка"><span class="avatar-fallback" aria-hidden="true">F</span><img src="https://avatars.fastly.steamstatic.com/4be173e349ebcca4a47ac2f935d867dc27f8ea43_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
       <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199771499987/" target="_blank" rel="noopener noreferrer">Fouzer</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Снайпер</div>
@@ -628,9 +672,10 @@
         <a class="stats-source" href="https://csstats.gg/player/76561199771499987" target="_blank" rel="noopener noreferrer">Статистика CSStats ↗</a>
       </div>
     </div>
-<div class="player">
+<div class="player player-custom theme-amber">
       <span class="badge">ЗАМЕНА</span>
-      <div class="num">06</div>
+      <div class="player-cover" aria-hidden="true"><span class="cover-crosshair"></span><span class="cover-orbit"></span><span class="cover-code">WINX / CS2</span></div><div class="num">06</div>
+      <div class="player-style-label">RESERVE · ГОТОВНОСТЬ</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561199641226020/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль 12player — новая вкладка"><span class="avatar-fallback" aria-hidden="true">12</span><img src="https://avatars.fastly.steamstatic.com/6f45a88d243bbadb1c4e486e288a73badb76fa7d_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
       <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561199641226020/" target="_blank" rel="noopener noreferrer">12player</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Запасной игрок</div>
@@ -639,9 +684,10 @@
         <a class="stats-source" href="https://csstats.gg/player/76561199641226020" target="_blank" rel="noopener noreferrer">Статистика CSStats ↗</a>
       </div>
     </div>
-<div class="player">
+<div class="player player-custom theme-rose">
       <span class="badge">ЗАМЕНА</span>
-      <div class="num">07</div>
+      <div class="player-cover" aria-hidden="true"><span class="cover-crosshair"></span><span class="cover-orbit"></span><span class="cover-code">WINX / CS2</span></div><div class="num">07</div>
+      <div class="player-style-label">RESERVE · ЭНЕРГИЯ</div>
       <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561198875581922/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль N1brA — новая вкладка"><span class="avatar-fallback" aria-hidden="true">N</span><img src="https://avatars.fastly.steamstatic.com/cc44449f5cbafc32b78ac16bc7a66036327566f8_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
       <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561198875581922/" target="_blank" rel="noopener noreferrer">N1brA</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Запасной игрок</div>
