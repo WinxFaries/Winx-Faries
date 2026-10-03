@@ -534,13 +534,13 @@
 .theme-ember .player-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#08061018,#08061055 42%,#080610ed 88%);}
 .theme-ember .cover-code{z-index:1;}
 
-/* Tokinxiik: retain the full terminal composition behind the avatar. */
-.theme-ember .avatar{overflow:visible;isolation:isolate;border-color:#b42a31;box-shadow:none;}
+/* Tokinxiik: circular overlay with the original animated Arasaka center. */
+.theme-ember .avatar{overflow:visible;isolation:isolate;border-color:#b42a31;box-shadow:0 0 0 2px #96212b55;}
 .theme-ember .avatar::before,.theme-ember .avatar::after{display:none;}
-.tokin-avatar-hud{position:absolute;width:108px;height:108px;left:50%;top:50%;transform:translate(-50%,-50%);z-index:0;pointer-events:none;overflow:hidden;border-radius:3px;background:#000;mask:none;-webkit-mask:none;}
-.tokin-frame-video{display:block;width:100%;height:100%;object-fit:cover;object-position:center;filter:none;opacity:1;}
-.theme-ember .avatar>img,.theme-ember .avatar>.avatar-fallback{z-index:1;position:relative;}
-.theme-ember .avatar>img{position:absolute;inset:0;width:100%;height:100%;border:1px solid #bc2a36;}
+.tokin-avatar-hud{position:absolute;inset:-3px;z-index:3;pointer-events:none;overflow:hidden;border-radius:50%;background:transparent;mix-blend-mode:screen;mask:none;-webkit-mask:none;}
+.tokin-frame-video{display:block;position:absolute;width:230%;height:230%;max-width:none;left:50%;top:50%;transform:translate(-50%,-50%);object-fit:cover;object-position:50% 50%;filter:none;opacity:.75;}
+.theme-ember .avatar>img{position:absolute;inset:0;width:100%;height:100%;z-index:1;}
+.theme-ember .avatar>.avatar-fallback{position:relative;z-index:0;}
 </style>
 </head>
 <body>
