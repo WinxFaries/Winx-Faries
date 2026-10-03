@@ -581,6 +581,18 @@
 .theme-rose .player-cover{height:100%;mask-image:none;background:#182939;overflow:hidden;pointer-events:none;}
 .nibra-cover-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 32%;}
 .theme-rose .player-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0a091118,#0a091133 42%,#0a0911d9 83%,#0a0911ee);}
+
+/* N1brA: circular Japanese lettering with a One Piece straw-hat accent. */
+.theme-rose{--accent:#e6c37e;--accent-rgb:230,195,126;}
+.theme-rose .avatar{overflow:hidden;isolation:isolate;border:0;box-shadow:none;}
+.theme-rose .avatar::before{inset:0;padding:0;border:0;border-radius:50%;background:url("https://i.pinimg.com/originals/73/dc/cb/73dccb77cc0030231caa46c7b7c7781e.jpg") center/100% 100% no-repeat;mask:radial-gradient(circle closest-side,transparent 64%,#000 72%);-webkit-mask:radial-gradient(circle closest-side,transparent 64%,#000 72%);mix-blend-mode:screen;filter:sepia(.8) saturate(.9);z-index:3;pointer-events:none;animation:nibraLetterOrbit 40s linear infinite;}
+.theme-rose .avatar::after{inset:1px;border:1px solid #e6c37e66;border-radius:50%;box-shadow:none;animation:none;z-index:2;pointer-events:none;}
+.nibra-strawhat{position:absolute;left:27px;top:0;width:22px;height:14px;z-index:4;pointer-events:none;filter:drop-shadow(0 1px 1px #21120c);animation:nibraHatFloat 6s ease-in-out infinite;}
+.nibra-strawhat svg{width:100%;height:100%;}
+@keyframes nibraLetterOrbit{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+@keyframes nibraHatFloat{0%,100%{transform:rotate(-4deg) translateY(0);}50%{transform:rotate(4deg) translateY(1px);}}
+.theme-rose.motion-paused .avatar::before,.theme-rose.motion-paused .nibra-strawhat{animation-play-state:paused;}
+@media(prefers-reduced-motion:reduce){.theme-rose .avatar::before,.nibra-strawhat{animation:none!important;}}
 </style>
 </head>
 <body>
@@ -747,7 +759,7 @@
       <span class="badge">ЗАМЕНА</span>
       <div class="player-cover" aria-hidden="true"><img class="nibra-cover-art" src="./assets/n1bra-background.jpg" alt="" loading="lazy" decoding="async"></div><div class="num">07</div>
       <div class="player-style-label">RESERVE · ЭНЕРГИЯ</div>
-      <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561198875581922/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль N1brA — новая вкладка"><span class="avatar-fallback" aria-hidden="true">N</span><img src="https://avatars.fastly.steamstatic.com/cc44449f5cbafc32b78ac16bc7a66036327566f8_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
+      <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561198875581922/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль N1brA — новая вкладка"><span class="avatar-fallback" aria-hidden="true">N</span><img src="https://avatars.fastly.steamstatic.com/cc44449f5cbafc32b78ac16bc7a66036327566f8_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"><span class="nibra-strawhat" aria-hidden="true"><svg viewBox="0 0 32 20"><path d="M8 13c0-13 16-13 16 0" fill="#eac36e" stroke="#8d5c27" stroke-width="1.2"/><path d="M8.5 9h15v4h-15Z" fill="#c83d49"/><ellipse cx="16" cy="14" rx="14" ry="4" fill="#edca7e" stroke="#8d5c27" stroke-width="1.2"/><path d="M9 13h14" stroke="#c83d49" stroke-width="2"/></svg></span></a>
       <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561198875581922/" target="_blank" rel="noopener noreferrer">N1brA</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Запасной игрок</div>
       
@@ -830,7 +842,7 @@
       <span class="badge">ЗАМЕНА</span>
       <div class="player-cover" aria-hidden="true"><img class="nibra-cover-art" src="./assets/n1bra-background.jpg" alt="" loading="lazy" decoding="async"></div><div class="num">07</div>
       <div class="player-style-label">RESERVE · ЭНЕРГИЯ</div>
-      <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561198875581922/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль N1brA — новая вкладка"><span class="avatar-fallback" aria-hidden="true">N</span><img src="https://avatars.fastly.steamstatic.com/cc44449f5cbafc32b78ac16bc7a66036327566f8_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"></a>
+      <a class="avatar steam-avatar" href="https://steamcommunity.com/profiles/76561198875581922/" target="_blank" rel="noopener noreferrer" aria-label="Steam-профиль N1brA — новая вкладка"><span class="avatar-fallback" aria-hidden="true">N</span><img src="https://avatars.fastly.steamstatic.com/cc44449f5cbafc32b78ac16bc7a66036327566f8_full.jpg" alt="" width="64" height="64" loading="lazy" decoding="async"><span class="nibra-strawhat" aria-hidden="true"><svg viewBox="0 0 32 20"><path d="M8 13c0-13 16-13 16 0" fill="#eac36e" stroke="#8d5c27" stroke-width="1.2"/><path d="M8.5 9h15v4h-15Z" fill="#c83d49"/><ellipse cx="16" cy="14" rx="14" ry="4" fill="#edca7e" stroke="#8d5c27" stroke-width="1.2"/><path d="M9 13h14" stroke="#c83d49" stroke-width="2"/></svg></span></a>
       <div class="nick"><a class="steam-nick" href="https://steamcommunity.com/profiles/76561198875581922/" target="_blank" rel="noopener noreferrer">N1brA</a><button type="button" class="player-verified verification-button" aria-label="Информация об официальном владельце аккаунта" aria-expanded="false" aria-controls="verificationMessage"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#3897f0" d="m12 1 2.7 2 3.4-.1 1 3.2 2.8 2-1 3.2 1 3.2-2.8 2-1 3.2-3.4-.1-2.7 2-2.7-2-3.4.1-1-3.2-2.8-2 1-3.2-1-3.2 2.8-2 1-3.2 3.4.1z"/><path d="m7.5 12 3 3 6-6" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       <div class="role">Запасной игрок</div>
       <div class="player-stats" aria-label="Статистика CS2 N1brA">
