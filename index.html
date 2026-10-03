@@ -481,6 +481,15 @@
 @keyframes bloomArtFloat{from{transform:scale(1.02) translateY(-1%);}to{transform:scale(1.08) translateY(1%);}}
 @keyframes bloomFrameBreath{0%,100%{opacity:.6;transform:rotate(45deg) scale(1);}50%{opacity:1;transform:rotate(45deg) scale(1.06);}}
 @media(prefers-reduced-motion:reduce){.bloom-cover-art,.theme-crimson .avatar::after{animation:none;}}
+
+/* Bloom's selected Pinterest ornament; preserve its orientation and avatar opening. */
+.theme-crimson .avatar{margin-top:12px;margin-bottom:32px;overflow:visible;}
+.theme-crimson .avatar::before{inset:-24px;padding:0;border:0;border-radius:50%;background:url("https://i.pinimg.com/originals/c9/a8/cd/c9a8cd05b367fd7cf7005dbb88c52a84.png") center/contain no-repeat;z-index:2;pointer-events:none;-webkit-mask:radial-gradient(circle closest-side,transparent 59%,#000 62%);mask:radial-gradient(circle closest-side,transparent 59%,#000 62%);filter:brightness(1.22) drop-shadow(0 0 3px #d2e7de80);animation:bloomGothFrame 6s ease-in-out infinite;transform-origin:center;}
+.theme-crimson .avatar::after{inset:-3px;border:1px solid #c2d6ce;border-radius:50%;box-shadow:0 0 12px #d7efe64d;animation:bloomGothGlow 3s ease-in-out infinite;transform:none;pointer-events:none;}
+@keyframes bloomGothFrame{0%,100%{transform:rotate(-2deg);filter:brightness(1.1) drop-shadow(0 0 2px #d2e7de66);}50%{transform:rotate(2deg);filter:brightness(1.4) drop-shadow(0 0 5px #d2e7de99);}}
+@keyframes bloomGothGlow{0%,100%{opacity:.45;}50%{opacity:1;}}
+.theme-crimson.motion-paused .avatar::before,.theme-crimson.motion-paused .avatar::after{animation-play-state:paused;}
+@media(prefers-reduced-motion:reduce){.theme-crimson .avatar::before,.theme-crimson .avatar::after{animation:none;}}
 </style>
 </head>
 <body>
