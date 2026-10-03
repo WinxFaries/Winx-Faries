@@ -683,6 +683,16 @@
 @keyframes roxStickerWiggle{0%,70%,100%{transform:rotate(-8deg);}78%{transform:rotate(12deg) translateY(-2px);}86%{transform:rotate(-12deg);}94%{transform:rotate(6deg);}}
 .motion-paused .rox-comic-stars,.motion-paused .rox-comic-sparks{animation-play-state:paused;}
 @media(prefers-reduced-motion:reduce){.rox-comic-stars,.rox-comic-sparks{animation:none!important;}}
+
+/* User-controlled Winx soundtrack */
+.winx-music { position:fixed; left:18px; bottom:18px; z-index:40; max-width:calc(100vw - 36px); padding:10px 14px; border:1px solid #e53d6380; border-radius:18px; background:#140c17ee; box-shadow:0 6px 24px #0006; backdrop-filter:blur(12px); color:#fff; }
+.winx-music button { background:transparent; border:0; color:inherit; font:inherit; cursor:pointer; padding:5px 0; }
+.winx-music button:focus-visible { outline:2px solid #ff7999; outline-offset:4px; }
+.winx-music small { display:block; color:#cbb9c6; font-size:11px; }
+.winx-music a { color:#ff9bb2; }
+.winx-music [hidden] { display:none; }
+@media(max-width:600px) { .winx-music { left:10px; bottom:10px; padding:7px 11px; } }
+
 </style>
 </head>
 <body>
@@ -1044,6 +1054,14 @@
   </div>
 </footer>
 
+<div class="winx-music">
+  <button type="button" id="winxMusicToggle" aria-pressed="false" aria-controls="winxSoundtrack">♫ Включить музыку Winx</button>
+  <small>Только вместе мы сильны</small>
+  <small id="winxMusicStatus" role="status" aria-live="polite"></small>
+  <a id="winxMusicFallback" href="https://винкс.skysound7.com/t/16673666981846662532-винкс-только-вместе-мы-сильны/" target="_blank" rel="noopener noreferrer" hidden>Открыть трек ↗</a>
+</div>
+<audio id="winxSoundtrack" preload="none" loop></audio>
+
 <aside class="cookie-notice" id="cookieNotice" aria-labelledby="cookieTitle" hidden>
   <h2 id="cookieTitle">Файлы cookie</h2>
   <p>Необходимые cookie сохраняют ваш выбор на 6 месяцев. С вашего согласия Google Analytics собирает статистику посещений и действий: просмотры страниц, запуск видео, переходы по ссылкам и отправку заявки. Данные анкеты в аналитику не передаются. Рекламные функции отключены. Вы можете отказаться или отозвать согласие через «Настройки cookie» внизу сайта.</p>
@@ -1056,6 +1074,37 @@
 </aside>
 
 <script>
+
+  const winxSoundtrack = document.getElementById('winxSoundtrack');
+  const winxMusicToggle = document.getElementById('winxMusicToggle');
+  const winxMusicStatus = document.getElementById('winxMusicStatus');
+  const winxMusicFallback = document.getElementById('winxMusicFallback');
+  winxSoundtrack.volume = 0.25;
+  const updateWinxMusic = () => {
+    winxMusicToggle.setAttribute('aria-pressed', String(!winxSoundtrack.paused));
+    winxMusicToggle.textContent = winxSoundtrack.paused ? '♫ Включить музыку Winx' : 'Ⅱ Выключить музыку Winx';
+  };
+  const winxMusicError = () => {
+    updateWinxMusic();
+    winxMusicStatus.textContent = 'Не удалось загрузить музыку. Попробуйте ещё раз или откройте трек.';
+    winxMusicFallback.hidden = false;
+  };
+  winxMusicToggle.addEventListener('click', async () => {
+    if (!winxSoundtrack.paused) { winxSoundtrack.pause(); return; }
+    winxMusicStatus.textContent = 'Загрузка…';
+    winxMusicFallback.hidden = true;
+    winxMusicToggle.disabled = true;
+    try {
+      if (!winxSoundtrack.getAttribute('src')) winxSoundtrack.src = "https://fine.sunproxy.net/file/SDFPUk43TVp4Tmp3VzM5ajBLQWJZSGZ6UDkzUWlyQmlITjlYUlVHNENSSGFXMTkvVmJ0R085L1F6QUhZRDVXdTJYTllueUxKNUNCVmkvUEFNZzhSSDFseTVnWDJUMHdyK1QxeUxmdGZIc1pXWFJWcWpFZE5MOWEzT01XQjVnS2lvRTFaSWJ2THBscmxtV1JiZ3hpYnd3PT0/Vinks_-_Tolko_vmeste_my_silny_(SkySound7.com).mp3";
+      await winxSoundtrack.play();
+      winxMusicStatus.textContent = '';
+    } catch (error) { winxMusicError(); }
+    finally { winxMusicToggle.disabled = false; updateWinxMusic(); }
+  });
+  winxSoundtrack.addEventListener('play', updateWinxMusic);
+  winxSoundtrack.addEventListener('pause', updateWinxMusic);
+  winxSoundtrack.addEventListener('error', winxMusicError);
+
   // Pause decorative motion outside the viewport and in background tabs.
   const animatedCards = document.querySelectorAll('.player-custom');
   const visibleCards = new Set();
@@ -1153,6 +1202,7 @@
     if (event.key === 'Escape') closeVerification();
   });
   document.getElementById('cinemaPlay').addEventListener('click', () => {
+    winxSoundtrack.pause();
     trackSiteEvent('tournament_video_open', {video_title: 'IEM Katowice 2025'});
     const player = document.createElement('iframe');
     player.title = 'IEM Katowice 2025 — официальный фрагмуви ESL';
