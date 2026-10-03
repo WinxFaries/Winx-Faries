@@ -585,8 +585,8 @@
 /* N1brA: circular Japanese lettering with a One Piece straw-hat accent. */
 .theme-rose{--accent:#e6c37e;--accent-rgb:230,195,126;}
 .theme-rose .avatar{overflow:hidden;isolation:isolate;border:0;box-shadow:none;}
-.theme-rose .avatar::before{inset:0;padding:0;border:0;border-radius:50%;background:url("https://i.pinimg.com/originals/73/dc/cb/73dccb77cc0030231caa46c7b7c7781e.jpg") center/100% 100% no-repeat;mask:radial-gradient(circle closest-side,transparent 64%,#000 72%);-webkit-mask:radial-gradient(circle closest-side,transparent 64%,#000 72%);mix-blend-mode:screen;filter:sepia(.8) saturate(.9);z-index:3;pointer-events:none;animation:nibraLetterOrbit 40s linear infinite;}
-.theme-rose .avatar::after{inset:1px;border:1px solid #e6c37e66;border-radius:50%;box-shadow:none;animation:none;z-index:2;pointer-events:none;}
+.theme-rose .avatar::before{inset:0;padding:0;border:0;border-radius:50%;background:url("https://i.pinimg.com/originals/73/dc/cb/73dccb77cc0030231caa46c7b7c7781e.jpg") center/100% 100% no-repeat;mask:radial-gradient(circle closest-side,transparent 64%,#000 72%);-webkit-mask:radial-gradient(circle closest-side,transparent 64%,#000 72%);mix-blend-mode:normal;filter:brightness(1.6) contrast(1.25);z-index:3;pointer-events:none;animation:nibraLetterOrbit 40s linear infinite;}
+.theme-rose .avatar::after{inset:1px;border:1px solid #f7e4b8aa;border-radius:50%;box-shadow:inset 0 0 4px #000;animation:none;z-index:2;pointer-events:none;}
 .nibra-strawhat{position:absolute;left:27px;top:0;width:22px;height:14px;z-index:4;pointer-events:none;filter:drop-shadow(0 1px 1px #21120c);animation:nibraHatFloat 6s ease-in-out infinite;}
 .nibra-strawhat svg{width:100%;height:100%;}
 @keyframes nibraLetterOrbit{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
