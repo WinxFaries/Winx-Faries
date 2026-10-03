@@ -623,6 +623,17 @@
 @keyframes fouzerNeonSurge{0%,100%{transform:translate(-6%,3%) scale(1);opacity:.45;}50%{transform:translate(7%,-4%) scale(1.12);opacity:1;}}
 @keyframes fouzerNeonRise{from{background-position:35px 120px,80px 241px;}to{background-position:35px 17px,80px 90px;}}
 @media(prefers-reduced-motion:reduce){.bloom-background-glow,.bloom-background-particles,.fouzer-background-glow,.fouzer-background-particles{animation:none!important;}}
+
+/* Distinct identities: Bloom starlight; Fouzer neon scanning. */
+.bloom-background-glow{inset:-10%;background:radial-gradient(ellipse at 50% 25%,#c9fce724,transparent 65%);mix-blend-mode:screen;animation:bloomStarlitBreath 8s ease-in-out infinite;transform:none;}
+.bloom-background-particles{background-image:radial-gradient(ellipse 1px 6px at 22% 28%,#fff 70%,transparent),radial-gradient(ellipse 6px 1px at 22% 28%,#fff 70%,transparent),radial-gradient(ellipse 1px 4px at 74% 42%,#c7ffec 70%,transparent),radial-gradient(ellipse 4px 1px at 74% 42%,#c7ffec 70%,transparent),radial-gradient(circle at 42% 60%,#dcfff4 0 1.5px,transparent 3px);background-size:100% 100%;animation:bloomStarTwinkle 6s ease-in-out infinite;opacity:.9;}
+.fouzer-background-glow{inset:-10%;background:linear-gradient(180deg,transparent 40%,#62f4ff88 48%,#f987da55 51%,transparent 57%);animation:fouzerScanPass 6s ease-in-out infinite;mix-blend-mode:screen;}
+.fouzer-background-particles{inset:0;background:repeating-linear-gradient(0deg,transparent 0 14px,#74eaff22 15px 16px,transparent 17px 31px);background-size:100% 100%;animation:fouzerSignalPulse 4s steps(1,end) infinite;opacity:.3;}
+@keyframes bloomStarlitBreath{0%,100%{opacity:.35;}50%{opacity:.75;}}
+@keyframes bloomStarTwinkle{0%,100%{opacity:.3;transform:translateY(2px) scale(.98);}35%{opacity:1;transform:translateY(-3px) scale(1.02);}70%{opacity:.5;transform:translateY(-1px) scale(1);}}
+@keyframes fouzerScanPass{0%{transform:translateY(-42%);opacity:0;}15%{opacity:.85;}85%{opacity:.85;}100%{transform:translateY(42%);opacity:0;}}
+@keyframes fouzerSignalPulse{0%,100%{opacity:.15;}25%{opacity:.4;}28%{opacity:.1;}32%{opacity:.35;}70%{opacity:.2;}}
+@media(prefers-reduced-motion:reduce){.bloom-background-glow,.bloom-background-particles,.fouzer-background-glow,.fouzer-background-particles{animation:none!important;}}
 </style>
 </head>
 <body>
