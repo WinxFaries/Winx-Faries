@@ -684,14 +684,19 @@
 .motion-paused .rox-comic-stars,.motion-paused .rox-comic-sparks{animation-play-state:paused;}
 @media(prefers-reduced-motion:reduce){.rox-comic-stars,.rox-comic-sparks{animation:none!important;}}
 
-/* User-controlled Winx soundtrack */
-.winx-music { position:fixed; left:18px; bottom:18px; z-index:40; max-width:calc(100vw - 36px); padding:10px 14px; border:1px solid #e53d6380; border-radius:18px; background:#140c17ee; box-shadow:0 6px 24px #0006; backdrop-filter:blur(12px); color:#fff; }
-.winx-music button { background:transparent; border:0; color:inherit; font:inherit; cursor:pointer; padding:5px 0; }
-.winx-music button:focus-visible { outline:2px solid #ff7999; outline-offset:4px; }
-.winx-music small { display:block; color:#cbb9c6; font-size:11px; }
-.winx-music a { color:#ff9bb2; }
+/* Compact collapsible Winx soundtrack */
+.winx-music { position:fixed; left:14px; bottom:14px; z-index:40; color:#fff; }
+.winx-music button { background:transparent; border:0; color:inherit; font:inherit; cursor:pointer; }
+.winx-music .music-launcher { display:grid; place-items:center; width:36px; height:36px; padding:0; border:1px solid #e53d6360; border-radius:50%; background:#140c17dd; box-shadow:0 3px 12px #0005; font-size:18px; opacity:.65; transition:opacity .2s; }
+.winx-music .music-launcher:hover, .winx-music .music-launcher:focus-visible, .winx-music .music-launcher[aria-expanded="true"] { opacity:1; }
+.winx-music .music-launcher[aria-pressed="true"] { color:#ff9bb2; }
+.winx-music-panel { position:absolute; left:0; bottom:44px; width:230px; max-width:calc(100vw - 28px); padding:12px; border:1px solid #e53d6360; border-radius:12px; background:#140c17f5; box-shadow:0 6px 24px #0006; backdrop-filter:blur(12px); }
+.winx-music-panel button { padding:5px 0; font-size:13px; }
+.winx-music button:focus-visible { outline:2px solid #ff7999; outline-offset:3px; }
+.winx-music small { display:block; color:#cbb9c6; font-size:11px; margin-top:4px; }
+.winx-music a { color:#ff9bb2; font-size:12px; }
 .winx-music [hidden] { display:none; }
-@media(max-width:600px) { .winx-music { left:10px; bottom:10px; padding:7px 11px; } }
+@media(prefers-reduced-motion:reduce) { .winx-music .music-launcher { transition:none; } }
 
 </style>
 </head>
@@ -1054,11 +1059,14 @@
   </div>
 </footer>
 
-<div class="winx-music">
+<div class="winx-music" id="winxMusicWidget">
+  <button type="button" class="music-launcher" id="winxMusicLauncher" aria-label="Открыть управление музыкой" aria-expanded="false" aria-controls="winxMusicPanel" title="Музыка Winx">♫</button>
+  <div class="winx-music-panel" id="winxMusicPanel" hidden>
   <button type="button" id="winxMusicToggle" aria-pressed="false" aria-controls="winxSoundtrack">♫ Включить музыку Winx</button>
   <small>Только вместе мы сильны</small>
   <small id="winxMusicStatus" role="status" aria-live="polite"></small>
   <a id="winxMusicFallback" href="https://винкс.skysound7.com/t/16673666981846662532-винкс-только-вместе-мы-сильны/" target="_blank" rel="noopener noreferrer" hidden>Открыть трек ↗</a>
+  </div>
 </div>
 <audio id="winxSoundtrack" preload="none" loop></audio>
 
@@ -1079,8 +1087,39 @@
   const winxMusicToggle = document.getElementById('winxMusicToggle');
   const winxMusicStatus = document.getElementById('winxMusicStatus');
   const winxMusicFallback = document.getElementById('winxMusicFallback');
+  const winxMusicWidget = document.getElementById('winxMusicWidget');
+  const winxMusicLauncher = document.getElementById('winxMusicLauncher');
+  const winxMusicPanel = document.getElementById('winxMusicPanel');
+  let musicCollapseTimer;
+  const closeMusicPanel = () => {
+    clearTimeout(musicCollapseTimer);
+    if (winxMusicPanel.contains(document.activeElement)) winxMusicLauncher.focus();
+    winxMusicPanel.hidden = true;
+    winxMusicLauncher.setAttribute('aria-expanded', 'false');
+    winxMusicLauncher.setAttribute('aria-label', 'Открыть управление музыкой');
+  };
+  const scheduleMusicCollapse = () => {
+    clearTimeout(musicCollapseTimer);
+    musicCollapseTimer = setTimeout(closeMusicPanel, 5000);
+  };
+  winxMusicLauncher.addEventListener('click', () => {
+    if (!winxMusicPanel.hidden) { closeMusicPanel(); return; }
+    winxMusicPanel.hidden = false;
+    winxMusicLauncher.setAttribute('aria-expanded', 'true');
+    winxMusicLauncher.setAttribute('aria-label', 'Свернуть управление музыкой');
+    scheduleMusicCollapse();
+  });
+  winxMusicWidget.addEventListener('pointermove', scheduleMusicCollapse);
+  winxMusicWidget.addEventListener('focusin', scheduleMusicCollapse);
+  winxMusicWidget.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeMusicPanel();
+  });
+  document.addEventListener('pointerdown', event => {
+    if (!winxMusicWidget.contains(event.target)) closeMusicPanel();
+  });
   winxSoundtrack.volume = 0.25;
   const updateWinxMusic = () => {
+    winxMusicLauncher.setAttribute('aria-pressed', String(!winxSoundtrack.paused));
     winxMusicToggle.setAttribute('aria-pressed', String(!winxSoundtrack.paused));
     winxMusicToggle.textContent = winxSoundtrack.paused ? '♫ Включить музыку Winx' : 'Ⅱ Выключить музыку Winx';
   };
@@ -1090,6 +1129,7 @@
     winxMusicFallback.hidden = false;
   };
   winxMusicToggle.addEventListener('click', async () => {
+    scheduleMusicCollapse();
     if (!winxSoundtrack.paused) { winxSoundtrack.pause(); return; }
     winxMusicStatus.textContent = 'Загрузка…';
     winxMusicFallback.hidden = true;
