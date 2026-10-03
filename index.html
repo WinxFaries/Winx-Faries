@@ -483,7 +483,7 @@
 @media(prefers-reduced-motion:reduce){.bloom-cover-art,.theme-crimson .avatar::after{animation:none;}}
 
 /* Bloom's selected Pinterest ornament; preserve its orientation and avatar opening. */
-.theme-crimson .avatar{width:76px;height:76px;margin-top:4px;margin-bottom:20px;overflow:visible;border:0;box-shadow:0 0 0 1px #a7c8bc66,0 0 14px #b3d9ca33;isolation:isolate;}
+.theme-crimson .avatar{width:76px;height:76px;margin-top:24px;margin-bottom:20px;overflow:visible;border:0;box-shadow:0 0 0 1px #a7c8bc66,0 0 14px #b3d9ca33;isolation:isolate;}
 .theme-crimson .avatar::before{inset:-3.167px;padding:0;border:0;border-radius:50%;clip-path:circle(49% at 50% 50%);mix-blend-mode:screen;background:url("https://i.pinimg.com/originals/c9/a8/cd/c9a8cd05b367fd7cf7005dbb88c52a84.png") center/contain no-repeat;z-index:2;pointer-events:none;-webkit-mask:radial-gradient(circle closest-side,transparent 54%,#000 61%);mask:radial-gradient(circle closest-side,transparent 54%,#000 61%);filter:brightness(1.22) drop-shadow(0 0 3px #d2e7de80);animation:bloomGothFrame 36s linear infinite,bloomFrameSparkle 8s linear infinite;transform-origin:center;}
 .theme-crimson .avatar::after{inset:-3.167px;border:1px solid #c2d6ce88;border-radius:50%;box-shadow:0 0 8px #d7efe633;animation:bloomGothGlow 8s ease-in-out infinite;transform:none;pointer-events:none;}
 @keyframes bloomGothFrame{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
@@ -500,7 +500,7 @@
 
 /* Fouzer: fitted neon frame from the selected original. */
 .theme-ice{--accent:#e65eb8;--accent-rgb:230,94,184;}
-.theme-ice .avatar{width:76px;height:76px;overflow:visible;isolation:isolate;border:0;margin-top:4px;margin-bottom:20px;box-shadow:0 0 0 1px #69e4ef77,0 0 12px #d940a433;}
+.theme-ice .avatar{width:76px;height:76px;overflow:visible;isolation:isolate;border:0;margin-top:24px;margin-bottom:20px;box-shadow:0 0 0 1px #69e4ef77,0 0 12px #d940a433;}
 .theme-ice .avatar::before{inset:-7.917px;padding:0;border:0;border-radius:50%;background:url("https://i.pinimg.com/originals/78/15/c1/7815c19912daea57b6d6dcd3362a6f9d.png") center/contain no-repeat;clip-path:circle(49%);-webkit-mask:radial-gradient(circle closest-side,transparent 78%,#000 82%);mask:radial-gradient(circle closest-side,transparent 78%,#000 82%);mix-blend-mode:screen;z-index:2;pointer-events:none;animation:fouzerNeonFlicker 7s linear infinite;transform:none;filter:hue-rotate(325deg) saturate(1.25) brightness(1.35);}
 .theme-ice .avatar::after{inset:-6.333px;padding:2.375px;border:0;border-radius:50%;background:conic-gradient(transparent 0deg 240deg,#ef57b100 270deg,#f75fc7 292deg,#a6ffff 307deg,#43d8f0 319deg,transparent 340deg);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;box-shadow:none;z-index:3;pointer-events:none;animation:fouzerNeonOrbit 5.5s linear infinite;filter:drop-shadow(0 0 4px #60eaff);}
 @keyframes fouzerNeonOrbit{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
