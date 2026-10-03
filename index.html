@@ -610,6 +610,19 @@
 @keyframes cardBackgroundParticles{from{transform:translateY(6%);}to{transform:translateY(-12%);}}
 .motion-paused .bloom-cover-art,.motion-paused .fouzer-cover-art,.motion-paused .bloom-background-glow,.motion-paused .fouzer-background-glow,.motion-paused .bloom-background-particles,.motion-paused .fouzer-background-particles{animation-play-state:paused;}
 @media(prefers-reduced-motion:reduce){.bloom-cover-art,.fouzer-cover-art,.bloom-background-glow,.fouzer-background-glow,.bloom-background-particles,.fouzer-background-particles{animation:none!important;}.bloom-background-particles,.fouzer-background-particles{display:none;}}
+
+/* More visible themed motion on Bloom and Fouzer backgrounds. */
+.bloom-cover-art{animation:bloomBackgroundPan 12s ease-in-out infinite alternate;}
+.fouzer-cover-art{animation:fouzerBackgroundPan 14s ease-in-out infinite alternate;}
+.bloom-background-glow{background:linear-gradient(115deg,transparent 30%,#a4f3d918 38%,#dfffff75 45%,#9ff5d82e 51%,transparent 61%);inset:-35%;animation:bloomSilverSweep 7s ease-in-out infinite;opacity:.85;}
+.bloom-background-particles{background-image:radial-gradient(circle,#ecfff7 0 1.7px,#b8ffe533 2.8px,transparent 4px),radial-gradient(circle,#ffffff 0 1px,transparent 3px);background-size:83px 117px,139px 157px;opacity:.85;animation:bloomSparkleDrift 9s ease-in-out infinite;}
+.fouzer-background-glow{background:linear-gradient(110deg,transparent 27%,#ff48b766 38%,#ffacd622 45%,transparent 53%),linear-gradient(250deg,transparent 37%,#48e6ff77 49%,transparent 60%);inset:-25%;animation:fouzerNeonSurge 5s ease-in-out infinite;opacity:.9;}
+.fouzer-background-particles{background-image:radial-gradient(ellipse,#ffa2d8 0 1.5px,transparent 3px),radial-gradient(ellipse,#b7fbff 0 1.5px,transparent 3px);background-size:77px 103px,127px 151px;opacity:.8;animation:fouzerNeonRise 8s linear infinite;}
+@keyframes bloomSilverSweep{0%,100%{transform:translateX(-22%) rotate(-3deg);opacity:.3;}50%{transform:translateX(22%) rotate(3deg);opacity:.9;}}
+@keyframes bloomSparkleDrift{0%,100%{transform:translate(-2%,4%);opacity:.45;}50%{transform:translate(3%,-7%);opacity:.95;}}
+@keyframes fouzerNeonSurge{0%,100%{transform:translate(-6%,3%) scale(1);opacity:.45;}50%{transform:translate(7%,-4%) scale(1.12);opacity:1;}}
+@keyframes fouzerNeonRise{from{background-position:35px 120px,80px 241px;}to{background-position:35px 17px,80px 90px;}}
+@media(prefers-reduced-motion:reduce){.bloom-background-glow,.bloom-background-particles,.fouzer-background-glow,.fouzer-background-particles{animation:none!important;}}
 </style>
 </head>
 <body>
