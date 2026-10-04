@@ -717,6 +717,28 @@
 .team-chat-row input { flex:1; }
 .team-chat-status { color:#cbb9c6; font-size:13px; }
 .team-chat [hidden] { display:none; }
+
+/* Team chat launcher, themes and media controls */
+.team-chat-launcher { position:fixed; right:18px; bottom:18px; z-index:40; border:1px solid #e53d6380; border-radius:999px; padding:11px 15px; color:#fff; background:#170d1dee; box-shadow:0 5px 22px #0007; cursor:pointer; font:600 13px inherit; }
+.team-chat-launcher:hover,.team-chat-launcher:focus-visible { border-color:#ff7999; transform:translateY(-2px); }
+.team-chat { position:fixed; right:18px; bottom:70px; z-index:45; width:min(460px,calc(100vw - 28px)); max-height:min(720px,calc(100vh - 100px)); overflow:auto; margin:0; padding:20px; display:grid; gap:12px; border:1px solid #e53d6380; border-radius:22px; background:#140d19f7; box-shadow:0 18px 60px #0009; backdrop-filter:blur(18px); }
+.team-chat[hidden] { display:none; }
+.team-chat-head { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.team-chat-close { border:0; background:transparent; color:#fff; cursor:pointer; font-size:22px; }
+.team-chat-themes { display:flex; gap:6px; flex-wrap:wrap; }
+.team-chat-theme { width:27px; height:27px; border:2px solid #fff5; border-radius:50%; cursor:pointer; }
+.team-chat-theme[aria-pressed=true] { outline:2px solid #fff; outline-offset:2px; }
+.team-chat[data-theme="aurora"] { background:linear-gradient(145deg,#12253a,#281535f7); }
+.team-chat[data-theme="crimson"] { background:linear-gradient(145deg,#35101d,#170b18f7); }
+.team-chat[data-theme="ocean"] { background:linear-gradient(145deg,#092b38,#101728f7); }
+.team-chat[data-theme="violet"] { background:linear-gradient(145deg,#24133f,#0e0a1cf7); }
+.team-chat[data-theme="emerald"] { background:linear-gradient(145deg,#0b342c,#0b1518f7); }
+.team-chat[data-theme="gold"] { background:linear-gradient(145deg,#3b2810,#17100cf7); }
+.team-chat-media { display:flex; gap:8px; flex-wrap:wrap; }
+.team-chat-media button { flex:1; min-width:130px; }
+.team-chat-recording { color:#ffb4c8; font-size:12px; }
+.team-chat-preview { width:100%; max-height:220px; border-radius:14px; background:#0008; }
+@media(max-width:600px){ .team-chat-launcher{right:10px;bottom:58px}.team-chat{right:10px;bottom:104px;padding:15px} }
 </style>
 </head>
 <body>
@@ -1052,8 +1074,10 @@
 </section>
 
 
-<section class="team-chat" id="teamChat" aria-labelledby="teamChatTitle">
-  <h2 id="teamChatTitle">Закрытый чат команды</h2>
+<button class="team-chat-launcher" id="teamChatLauncher" type="button" aria-controls="teamChat" aria-expanded="false">🔒 Чат команды</button>
+<section class="team-chat" id="teamChat" aria-labelledby="teamChatTitle" data-theme="aurora" hidden>
+  <div class="team-chat-head"><h2 id="teamChatTitle">Чат команды</h2><button class="team-chat-close" id="teamChatClose" type="button" aria-label="Закрыть чат">×</button></div>
+  <p class="team-chat-status">Закрытый канал Winx Fairies</p>
   <p class="team-chat-status">Доступ только подтверждённым участникам состава.</p>
   <div class="team-chat-auth" id="teamChatAuth">
     <input id="teamChatNickname" list="teamChatPlayers" autocomplete="username" placeholder="Ник игрока">
@@ -1061,10 +1085,11 @@
     <input id="teamChatPassword" type="password" autocomplete="current-password" placeholder="Клубный пароль">
     <button class="btn btn-solid" id="teamChatSignIn" type="button">Войти в чат</button>
   </div>
+  <div class="team-chat-themes" aria-label="Тема чата"><button class="team-chat-theme" style="background:linear-gradient(135deg,#6ee7ff,#8b5cf6)" data-theme-choice="aurora" aria-label="Аврора" aria-pressed="true"></button><button class="team-chat-theme" style="background:#c92b4b" data-theme-choice="crimson" aria-label="Алый" aria-pressed="false"></button><button class="team-chat-theme" style="background:#159bb5" data-theme-choice="ocean" aria-label="Океан" aria-pressed="false"></button><button class="team-chat-theme" style="background:#8c54d9" data-theme-choice="violet" aria-label="Фиолетовый" aria-pressed="false"></button><button class="team-chat-theme" style="background:#22b896" data-theme-choice="emerald" aria-label="Изумрудный" aria-pressed="false"></button><button class="team-chat-theme" style="background:#d89735" data-theme-choice="gold" aria-label="Золотой" aria-pressed="false"></button></div>
   <div class="team-chat-room" id="teamChatRoom" hidden>
     <div class="team-chat-row"><span id="teamChatUser" class="team-chat-status"></span><button class="btn btn-ghost" id="teamChatSignOut" type="button">Выйти</button></div>
     <div class="team-chat-messages" id="teamChatMessages" aria-live="polite"></div>
-    <div class="team-chat-row"><input id="teamChatMessage" maxlength="1000" placeholder="Сообщение команде…"><button class="btn btn-solid" id="teamChatSend" type="button">Отправить</button></div>
+    <div class="team-chat-media"><button class="btn btn-ghost" id="teamChatVoice" type="button">🎙 Голосовое</button><button class="btn btn-ghost" id="teamChatVideo" type="button">◉ Видеокружок</button></div><div class="team-chat-recording" id="teamChatRecording" hidden></div><video class="team-chat-preview" id="teamChatPreview" controls playsinline hidden></video><audio id="teamChatAudioPreview" controls hidden></audio><div class="team-chat-row"><input id="teamChatMessage" maxlength="1000" placeholder="Сообщение команде…"><button class="btn btn-solid" id="teamChatSend" type="button">Отправить</button></div>
   </div>
   <p class="team-chat-status" id="teamChatStatus" role="status" aria-live="polite"></p>
 </section>
@@ -1547,6 +1572,25 @@
     const {error}=await supabase.from('team_messages').insert({user_id:user.id,message:text});
     if(error)setStatus(error.message); else {input.value=''; await loadMessages();}
   };
+  const chatPanel = document.getElementById('teamChat'), launcher = document.getElementById('teamChatLauncher');
+  document.getElementById('teamChatClose').onclick = () => { chatPanel.hidden=true; launcher.setAttribute('aria-expanded','false'); };
+  launcher.onclick = () => { chatPanel.hidden=!chatPanel.hidden; launcher.setAttribute('aria-expanded',String(!chatPanel.hidden)); };
+  document.querySelectorAll('[data-theme-choice]').forEach(button => button.onclick=() => { chatPanel.dataset.theme=button.dataset.themeChoice; document.querySelectorAll('[data-theme-choice]').forEach(item=>item.setAttribute('aria-pressed',String(item===button))); localStorage.setItem('winx-chat-theme',button.dataset.themeChoice); });
+  const savedChatTheme=localStorage.getItem('winx-chat-theme'); if(savedChatTheme){chatPanel.dataset.theme=savedChatTheme;document.querySelectorAll('[data-theme-choice]').forEach(item=>item.setAttribute('aria-pressed',String(item.dataset.themeChoice===savedChatTheme)));}
+  let recorder, recorderChunks=[], recorderKind='';
+  const recordingLabel=document.getElementById('teamChatRecording'), preview=document.getElementById('teamChatPreview'), audioPreview=document.getElementById('teamChatAudioPreview');
+  const record = async kind => {
+    if(recorder){recorder.stop();return;}
+    try {
+      const stream=await navigator.mediaDevices.getUserMedia(kind==='video'?{audio:true,video:true}:{audio:true});
+      recorderKind=kind; recorderChunks=[]; recorder=new MediaRecorder(stream);
+      recorder.ondataavailable=e=>{if(e.data.size)recorderChunks.push(e.data);};
+      recorder.onstop=()=>{stream.getTracks().forEach(track=>track.stop());const blob=new Blob(recorderChunks,{type:recorder.mimeType});const url=URL.createObjectURL(blob); if(recorderKind==='video'){preview.src=url;preview.hidden=false;}else{audioPreview.src=url;audioPreview.hidden=false;} recordingLabel.hidden=true; recorder=null;};
+      recorder.start(); recordingLabel.textContent='● Идёт запись… нажмите кнопку ещё раз для завершения'; recordingLabel.hidden=false;
+    } catch { setStatus('Разрешите доступ к микрофону или камере в браузере.'); }
+  };
+  document.getElementById('teamChatVoice').onclick=()=>record('audio');
+  document.getElementById('teamChatVideo').onclick=()=>record('video');
   supabase.auth.onAuthStateChange((_event,session) => render(session));
   supabase.auth.getSession().then(({data:{session}}) => render(session));
   supabase.channel('team-chat-live').on('postgres_changes',{event:'INSERT',schema:'public',table:'team_messages'},loadMessages).subscribe();
