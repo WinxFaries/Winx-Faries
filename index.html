@@ -1623,6 +1623,7 @@
       const { data, error } = await supabase.auth.signInAnonymously();
       if (error) { setStatus(error.message); return; }
       await supabase.auth.updateUser({ data:{nickname:player} });
+      await supabase.auth.refreshSession();
       currentNickname = player; password.value=''; setStatus(''); await render(data.session);
     } catch { setStatus('Не удалось связаться с сервером.'); }
   };
