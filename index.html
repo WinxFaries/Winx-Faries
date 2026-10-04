@@ -775,6 +775,14 @@
 .team-chat-theme { position:relative; width:46px; height:30px; border-radius:9px; opacity:.8; }
 .team-chat-theme:after { content:attr(aria-label); position:absolute; top:33px; left:50%; transform:translateX(-50%); color:#8fa5b7; font-size:9px; white-space:nowrap; pointer-events:none; }
 .team-chat-themes { padding-bottom:25px; gap:8px; }
+
+/* Telegram composer and verification badge */
+.team-chat-room > .team-chat-row:last-child { gap:6px; }
+.chat-media-icon { flex:0 0 34px; width:34px; height:34px; padding:0; border:0; border-radius:50%; background:transparent; color:#91a8ba; cursor:pointer; font-size:18px; }
+.chat-media-icon:hover,.chat-media-icon:focus-visible { color:#62b5ee; background:#ffffff12; }
+.team-chat-room > .team-chat-row:last-child input { flex:1; }
+.team-chat-profile-name:after { content:"✓"; display:inline-grid; place-items:center; width:14px; height:14px; margin-left:5px; border-radius:50%; background:#39a8ef; color:#fff; font-size:10px; vertical-align:1px; }
+.team-chat-message strong:after { content:"✓"; display:inline-grid; place-items:center; width:12px; height:12px; margin-left:4px; border-radius:50%; background:#39a8ef; color:#fff; font-size:8px; vertical-align:1px; }
 </style>
 </head>
 <body>
@@ -1125,7 +1133,7 @@
   <div class="team-chat-room" id="teamChatRoom" hidden>
     <div class="team-chat-row"><span id="teamChatUser" class="team-chat-status"></span><button class="btn btn-ghost" id="teamChatSignOut" type="button">Выйти</button></div>
     <div class="team-chat-messages" id="teamChatMessages" aria-live="polite"></div>
-    <div class="team-chat-media"><button class="btn btn-ghost" id="teamChatVoice" type="button">🎙 Голосовое</button><button class="btn btn-ghost" id="teamChatVideo" type="button">◉ Видеокружок</button></div><div class="team-chat-recording" id="teamChatRecording" hidden></div><video class="team-chat-preview" id="teamChatPreview" controls playsinline hidden></video><audio id="teamChatAudioPreview" controls hidden></audio><div class="team-chat-row"><input id="teamChatMessage" maxlength="1000" placeholder="Сообщение команде…"><button class="btn btn-solid" id="teamChatSend" type="button">Отправить</button></div>
+    <div class="team-chat-recording" id="teamChatRecording" hidden></div><video class="team-chat-preview" id="teamChatPreview" controls playsinline hidden></video><audio id="teamChatAudioPreview" controls hidden></audio><div class="team-chat-row"><button class="chat-media-icon" id="teamChatVoice" type="button" aria-label="Записать голосовое сообщение">🎙</button><input id="teamChatMessage" maxlength="1000" placeholder="Сообщение команде…"><button class="chat-media-icon" id="teamChatVideo" type="button" aria-label="Записать видеокружок">◉</button><button class="btn btn-solid" id="teamChatSend" type="button">Отправить</button></div>
   </div>
   <p class="team-chat-status" id="teamChatStatus" role="status" aria-live="polite"></p>
 </section>
