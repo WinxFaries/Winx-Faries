@@ -704,6 +704,19 @@
 .winx-music [hidden] { display:none; }
 @media(prefers-reduced-motion:reduce) { .winx-music .music-launcher { transition:none; } }
 
+
+/* Private team chat */
+.team-chat { margin:72px auto; max-width:920px; padding:28px; border:1px solid #e53d6344; border-radius:22px; background:linear-gradient(145deg,#17101be8,#0d0a10e8); }
+.team-chat h2 { margin-top:0; }
+.team-chat-auth,.team-chat-room { display:grid; gap:12px; }
+.team-chat input { width:100%; box-sizing:border-box; padding:12px; border:1px solid #ffffff22; border-radius:10px; background:#09070c; color:#fff; }
+.team-chat-messages { min-height:180px; max-height:360px; overflow:auto; display:grid; align-content:start; gap:8px; padding:12px; border-radius:12px; background:#09070caa; }
+.team-chat-message { padding:9px 12px; border-radius:10px; background:#231722; }
+.team-chat-message strong { color:#ff9bb2; margin-right:8px; }
+.team-chat-row { display:flex; gap:10px; }
+.team-chat-row input { flex:1; }
+.team-chat-status { color:#cbb9c6; font-size:13px; }
+.team-chat [hidden] { display:none; }
 </style>
 </head>
 <body>
@@ -1036,6 +1049,23 @@
       <span class="apply-status" id="applyStatus" role="status" aria-live="polite"></span>
     </div>
   </form>
+</section>
+
+
+<section class="team-chat" id="teamChat" aria-labelledby="teamChatTitle">
+  <h2 id="teamChatTitle">Закрытый чат команды</h2>
+  <p class="team-chat-status">Доступ только подтверждённым участникам состава.</p>
+  <div class="team-chat-auth" id="teamChatAuth">
+    <input id="teamChatEmail" type="email" autocomplete="email" placeholder="Email участника">
+    <input id="teamChatPassword" type="password" autocomplete="current-password" placeholder="Пароль">
+    <div class="team-chat-row"><button class="btn btn-solid" id="teamChatSignIn" type="button">Войти</button><button class="btn btn-ghost" id="teamChatSignUp" type="button">Зарегистрироваться</button></div>
+  </div>
+  <div class="team-chat-room" id="teamChatRoom" hidden>
+    <div class="team-chat-row"><span id="teamChatUser" class="team-chat-status"></span><button class="btn btn-ghost" id="teamChatSignOut" type="button">Выйти</button></div>
+    <div class="team-chat-messages" id="teamChatMessages" aria-live="polite"></div>
+    <div class="team-chat-row"><input id="teamChatMessage" maxlength="1000" placeholder="Сообщение команде…"><button class="btn btn-solid" id="teamChatSend" type="button">Отправить</button></div>
+  </div>
+  <p class="team-chat-status" id="teamChatStatus" role="status" aria-live="polite"></p>
 </section>
 
 <footer id="contact">
@@ -1465,6 +1495,42 @@
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onApplicationChallengeReady&render=explicit" async defer></script>
 <script>
   if ("serviceWorker" in navigator && location.protocol !== "file:") navigator.serviceWorker.register("sw.js").catch(() => {});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(() => {
+  const supabase = window.supabase.createClient("https://ebagwygqmdynpiddwuki.supabase.co", "sb_publishable_Fo3f0hO9pFDQxHlYtQkM7g_jwoAMR3L");
+  const auth = document.getElementById('teamChatAuth'), room = document.getElementById('teamChatRoom');
+  const email = document.getElementById('teamChatEmail'), password = document.getElementById('teamChatPassword');
+  const status = document.getElementById('teamChatStatus'), messages = document.getElementById('teamChatMessages');
+  const setStatus = text => { status.textContent = text || ''; };
+  const render = async session => {
+    if (!session) { auth.hidden = false; room.hidden = true; return; }
+    const { data: member } = await supabase.from('team_members').select('nickname,role,is_team_member').eq('id',session.user.id).eq('is_team_member',true).maybeSingle();
+    if (!member) { await supabase.auth.signOut(); setStatus('Этот аккаунт ещё не добавлен в состав команды.'); return; }
+    auth.hidden = true; room.hidden = false; document.getElementById('teamChatUser').textContent = member.nickname + ' · ' + member.role;
+    await loadMessages();
+  };
+  const loadMessages = async () => {
+    const { data, error } = await supabase.from('team_messages').select('id,message,created_at,user_id').order('created_at',{ascending:true}).limit(100);
+    if (error) { setStatus(error.message); return; }
+    messages.innerHTML = '';
+    for (const item of data) {
+      const { data: m } = await supabase.from('team_members').select('nickname').eq('id',item.user_id).maybeSingle();
+      const el = document.createElement('div'); el.className='team-chat-message';
+      const name=document.createElement('strong'); name.textContent=m?.nickname || 'Участник';
+      el.append(name,document.createTextNode(item.message)); messages.append(el);
+    }
+    messages.scrollTop=messages.scrollHeight;
+  };
+  document.getElementById('teamChatSignIn').onclick = async () => { setStatus('Вход…'); const {error}=await supabase.auth.signInWithPassword({email:email.value.trim(),password:password.value}); setStatus(error ? error.message : ''); };
+  document.getElementById('teamChatSignUp').onclick = async () => { setStatus('Проверяем регистрацию…'); const {error}=await supabase.auth.signUp({email:email.value.trim(),password:password.value}); setStatus(error ? error.message : 'Проверьте почту, затем сообщите администратору email для добавления в состав.'); };
+  document.getElementById('teamChatSignOut').onclick = () => supabase.auth.signOut();
+  document.getElementById('teamChatSend').onclick = async () => { const input=document.getElementById('teamChatMessage'), text=input.value.trim(); if(!text)return; const {data:{user}}=await supabase.auth.getUser(); const {error}=await supabase.from('team_messages').insert({user_id:user.id,message:text}); if(error)setStatus(error.message); else {input.value=''; await loadMessages();} };
+  supabase.auth.onAuthStateChange((_event,session) => render(session));
+  supabase.auth.getSession().then(({data:{session}}) => render(session));
+  supabase.channel('team-chat-live').on('postgres_changes',{event:'INSERT',schema:'public',table:'team_messages'},loadMessages).subscribe();
+})();
 </script>
 </body>
 </html>
