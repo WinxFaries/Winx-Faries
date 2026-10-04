@@ -2,7 +2,13 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b080d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Winx Fairies">
+<link rel="manifest" href="manifest.webmanifest">
 <title>Winx Fairies — официальный сайт команды CS2</title>
 <meta name="description" content="Официальный сайт Winx Fairies — команды по Counter-Strike 2 (CS2). Основной и запасной состав, статистика игроков, Steam-профили и заявки в команду.">
 <meta name="robots" content="index, follow">
@@ -1457,6 +1463,9 @@
 </script>
 
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onApplicationChallengeReady&render=explicit" async defer></script>
+<script>
+  if ("serviceWorker" in navigator && location.protocol !== "file:") navigator.serviceWorker.register("sw.js").catch(() => {});
+</script>
 </body>
 </html>
 
