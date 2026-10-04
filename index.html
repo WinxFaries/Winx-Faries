@@ -789,6 +789,11 @@
 .team-chat-message.is-own strong { color:#d7edff; }
 .team-chat-message-time { position:absolute; right:9px; bottom:4px; color:#a9c5d8; font-size:10px; }
 .team-chat-message.is-own .team-chat-message-time:after { content:" ✓✓"; color:#73c8f5; letter-spacing:-2px; }
+
+.team-chat-message { display:grid; grid-template-columns:28px minmax(0,1fr); column-gap:7px; align-items:start; }
+.team-chat-message > img { grid-row:1 / span 2; width:28px; height:28px; border-radius:50%; object-fit:cover; }
+.team-chat-message > strong,.team-chat-message > span:not(.team-chat-message-time) { grid-column:2; }
+.team-chat-message-time { grid-column:2; }
 </style>
 </head>
 <body>
@@ -1605,16 +1610,17 @@
     await loadMessages();
   };
   const loadMessages = async () => {
-    const { data, error } = await supabase.from('team_messages').select('id,message,created_at,user_id').order('created_at',{ascending:true}).limit(100);
+    const { data, error } = await supabase.from('team_messages').select('id,message,created_at,user_id,nickname,avatar_url').order('created_at',{ascending:true}).limit(100);
     if (error) { setStatus(error.message); return; }
     messages.innerHTML = '';
     for (const item of data || []) {
       const own = item.user_id === (await supabase.auth.getUser()).data.user?.id;
       const el = document.createElement('div'); el.className='team-chat-message' + (own ? ' is-own' : '');
-      const name=document.createElement('strong'); name.textContent=own && currentNickname ? currentNickname : 'Участник';
+      const avatar=document.createElement('img'); avatar.src=item.avatar_url || playerAvatars[item.nickname] || 'assets/favicon-192.png'; avatar.alt='';
+      const name=document.createElement('strong'); name.textContent=item.nickname || (own && currentNickname ? currentNickname : 'Участник');
       const body=document.createElement('span'); body.textContent=item.message;
       const time=document.createElement('span'); time.className='team-chat-message-time'; time.textContent=new Date(item.created_at).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
-      el.append(name,body,time); messages.append(el);
+      el.append(avatar,name,body,time); messages.append(el);
     }
     messages.scrollTop=messages.scrollHeight;
   };
@@ -1640,7 +1646,7 @@
   document.getElementById('teamChatSend').onclick = async () => {
     const input=document.getElementById('teamChatMessage'), text=input.value.trim(); if(!text)return;
     const {data:{user}}=await supabase.auth.getUser(); if(!user)return;
-    const {error}=await supabase.from('team_messages').insert({user_id:user.id,message:text});
+    const {error}=await supabase.from('team_messages').insert({user_id:user.id,message:text,nickname:currentNickname,avatar_url:playerAvatars[currentNickname] || null});
     if(error)setStatus(error.message); else {input.value=''; await loadMessages();}
   };
   const chatPanel = document.getElementById('teamChat'), launcher = document.getElementById('teamChatLauncher');
