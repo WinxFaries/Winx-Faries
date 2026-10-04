@@ -766,6 +766,15 @@
 .team-chat[data-theme="violet"] .team-chat-messages { background-color:#171326; }
 .team-chat[data-theme="emerald"] .team-chat-messages { background-color:#0d211d; }
 .team-chat[data-theme="gold"] .team-chat-messages { background-color:#211a0e; }
+
+.team-chat-profile { display:flex; align-items:center; gap:9px; min-width:0; }
+.team-chat-profile img { width:34px; height:34px; border-radius:50%; object-fit:cover; border:2px solid #64b5ef; }
+.team-chat-profile-text { min-width:0; }
+.team-chat-profile-name { display:block; color:#fff; font-size:14px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.team-chat-profile-status { display:block; color:#8fa5b7; font-size:11px; }
+.team-chat-theme { position:relative; width:46px; height:30px; border-radius:9px; opacity:.8; }
+.team-chat-theme:after { content:attr(aria-label); position:absolute; top:33px; left:50%; transform:translateX(-50%); color:#8fa5b7; font-size:9px; white-space:nowrap; pointer-events:none; }
+.team-chat-themes { padding-bottom:25px; gap:8px; }
 </style>
 </head>
 <body>
@@ -1103,7 +1112,7 @@
 
 <button class="team-chat-launcher" id="teamChatLauncher" type="button" aria-controls="teamChat" aria-expanded="false">🔒 Чат команды</button>
 <section class="team-chat" id="teamChat" aria-labelledby="teamChatTitle" data-theme="aurora" hidden>
-  <div class="team-chat-head"><h2 id="teamChatTitle">Чат команды</h2><button class="team-chat-close" id="teamChatClose" type="button" aria-label="Закрыть чат">×</button></div>
+  <div class="team-chat-head"><div class="team-chat-profile"><img id="teamChatAvatar" src="assets/favicon-192.png" alt=""><div class="team-chat-profile-text"><span class="team-chat-profile-name" id="teamChatProfileName">Чат команды</span><span class="team-chat-profile-status" id="teamChatProfileStatus">Закрытый канал</span></div></div><button class="team-chat-close" id="teamChatClose" type="button" aria-label="Закрыть чат">×</button></div>
   <p class="team-chat-status">Закрытый канал Winx Fairies</p>
   <p class="team-chat-status">Доступ только подтверждённым участникам состава.</p>
   <div class="team-chat-auth" id="teamChatAuth">
@@ -1558,10 +1567,27 @@
   const status = document.getElementById('teamChatStatus'), messages = document.getElementById('teamChatMessages');
   let currentNickname = '';
   const setStatus = text => { status.textContent = text || ''; };
+  const playerAvatars = {
+    Bloom:'https://avatars.fastly.steamstatic.com/43db734201f3292e7a4c7501a1eed73911c59a74_full.jpg',
+    Tokinxiik:'https://avatars.fastly.steamstatic.com/5f96e65926fc80b1bd32172fad1861342aaa5c90_full.jpg',
+    Rox1n:'https://avatars.fastly.steamstatic.com/2f73908bab34ebb944a3f1035a9e032af2ca6568_full.jpg',
+    NeShkolar:'https://avatars.fastly.steamstatic.com/934c369197a22c858bf0e7c26d37fa24827c273e_full.jpg',
+    Fouzer:'https://avatars.fastly.steamstatic.com/4be173e349ebcca4a47ac2f935d867dc27f8ea43_full.jpg',
+    '12player':'https://avatars.fastly.steamstatic.com/6f45a88d243bbadb1c4e486e288a73badb76fa7d_full.jpg',
+    N1brA:'https://avatars.fastly.steamstatic.com/cc44449f5cbafc32b78ac16bc7a66036327566f8_full.jpg'
+  };
+  const updateChatProfile = (name, online) => {
+    document.getElementById('teamChatProfileName').textContent = name || 'Чат команды';
+    document.getElementById('teamChatAvatar').src = playerAvatars[name] || 'assets/favicon-192.png';
+    const statusEl=document.getElementById('teamChatProfileStatus');
+    if (online) statusEl.textContent='в сети';
+    else { const last=localStorage.getItem('winx-last-seen-'+name); statusEl.textContent=last ? 'был(а) в сети '+new Date(Number(last)).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : 'не в сети'; }
+  };
+
   const render = async session => {
     if (!session) { auth.hidden = false; room.hidden = true; return; }
     auth.hidden = true; room.hidden = false;
-    document.getElementById('teamChatUser').textContent = currentNickname || session.user.user_metadata?.nickname || 'Участник';
+    document.getElementById('teamChatUser').textContent = currentNickname || session.user.user_metadata?.nickname || 'Участник'; updateChatProfile(currentNickname || session.user.user_metadata?.nickname || 'Участник', true);
     await loadMessages();
   };
   const loadMessages = async () => {
@@ -1592,7 +1618,7 @@
       currentNickname = player; password.value=''; setStatus(''); await render(data.session);
     } catch { setStatus('Не удалось связаться с сервером.'); }
   };
-  document.getElementById('teamChatSignOut').onclick = async () => { currentNickname=''; await supabase.auth.signOut(); };
+  document.getElementById('teamChatSignOut').onclick = async () => { if(currentNickname)localStorage.setItem('winx-last-seen-'+currentNickname,String(Date.now())); updateChatProfile(currentNickname,false); currentNickname=''; await supabase.auth.signOut(); };
   document.getElementById('teamChatSend').onclick = async () => {
     const input=document.getElementById('teamChatMessage'), text=input.value.trim(); if(!text)return;
     const {data:{user}}=await supabase.auth.getUser(); if(!user)return;
