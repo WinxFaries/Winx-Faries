@@ -1056,9 +1056,10 @@
   <h2 id="teamChatTitle">Закрытый чат команды</h2>
   <p class="team-chat-status">Доступ только подтверждённым участникам состава.</p>
   <div class="team-chat-auth" id="teamChatAuth">
-    <input id="teamChatEmail" type="email" autocomplete="email" placeholder="Email участника">
-    <input id="teamChatPassword" type="password" autocomplete="current-password" placeholder="Пароль">
-    <div class="team-chat-row"><button class="btn btn-solid" id="teamChatSignIn" type="button">Войти</button><button class="btn btn-ghost" id="teamChatSignUp" type="button">Зарегистрироваться</button></div>
+    <input id="teamChatNickname" list="teamChatPlayers" autocomplete="username" placeholder="Ник игрока">
+    <datalist id="teamChatPlayers"><option>Bloom</option><option>Tokinxiik</option><option>Rox1n</option><option>NeShkolar</option><option>Fouzer</option><option>12player</option><option>N1brA</option></datalist>
+    <input id="teamChatPassword" type="password" autocomplete="current-password" placeholder="Клубный пароль">
+    <button class="btn btn-solid" id="teamChatSignIn" type="button">Войти в чат</button>
   </div>
   <div class="team-chat-room" id="teamChatRoom" hidden>
     <div class="team-chat-row"><span id="teamChatUser" class="team-chat-status"></span><button class="btn btn-ghost" id="teamChatSignOut" type="button">Выйти</button></div>
@@ -1501,32 +1502,51 @@
 (() => {
   const supabase = window.supabase.createClient("https://ebagwygqmdynpiddwuki.supabase.co", "sb_publishable_Fo3f0hO9pFDQxHlYtQkM7g_jwoAMR3L");
   const auth = document.getElementById('teamChatAuth'), room = document.getElementById('teamChatRoom');
-  const email = document.getElementById('teamChatEmail'), password = document.getElementById('teamChatPassword');
+  const nickname = document.getElementById('teamChatNickname'), password = document.getElementById('teamChatPassword');
   const status = document.getElementById('teamChatStatus'), messages = document.getElementById('teamChatMessages');
+  let currentNickname = '';
   const setStatus = text => { status.textContent = text || ''; };
   const render = async session => {
     if (!session) { auth.hidden = false; room.hidden = true; return; }
-    const { data: member } = await supabase.from('team_members').select('nickname,role,is_team_member').eq('id',session.user.id).eq('is_team_member',true).maybeSingle();
-    if (!member) { await supabase.auth.signOut(); setStatus('Этот аккаунт ещё не добавлен в состав команды.'); return; }
-    auth.hidden = true; room.hidden = false; document.getElementById('teamChatUser').textContent = member.nickname + ' · ' + member.role;
+    auth.hidden = true; room.hidden = false;
+    document.getElementById('teamChatUser').textContent = currentNickname || session.user.user_metadata?.nickname || 'Участник';
     await loadMessages();
   };
   const loadMessages = async () => {
     const { data, error } = await supabase.from('team_messages').select('id,message,created_at,user_id').order('created_at',{ascending:true}).limit(100);
     if (error) { setStatus(error.message); return; }
     messages.innerHTML = '';
-    for (const item of data) {
-      const { data: m } = await supabase.from('team_members').select('nickname').eq('id',item.user_id).maybeSingle();
+    for (const item of data || []) {
       const el = document.createElement('div'); el.className='team-chat-message';
-      const name=document.createElement('strong'); name.textContent=m?.nickname || 'Участник';
+      const name=document.createElement('strong'); name.textContent=item.user_id === (await supabase.auth.getUser()).data.user?.id && currentNickname ? currentNickname : 'Участник';
       el.append(name,document.createTextNode(item.message)); messages.append(el);
     }
     messages.scrollTop=messages.scrollHeight;
   };
-  document.getElementById('teamChatSignIn').onclick = async () => { setStatus('Вход…'); const {error}=await supabase.auth.signInWithPassword({email:email.value.trim(),password:password.value}); setStatus(error ? error.message : ''); };
-  document.getElementById('teamChatSignUp').onclick = async () => { setStatus('Проверяем регистрацию…'); const {error}=await supabase.auth.signUp({email:email.value.trim(),password:password.value}); setStatus(error ? error.message : 'Проверьте почту, затем сообщите администратору email для добавления в состав.'); };
-  document.getElementById('teamChatSignOut').onclick = () => supabase.auth.signOut();
-  document.getElementById('teamChatSend').onclick = async () => { const input=document.getElementById('teamChatMessage'), text=input.value.trim(); if(!text)return; const {data:{user}}=await supabase.auth.getUser(); const {error}=await supabase.from('team_messages').insert({user_id:user.id,message:text}); if(error)setStatus(error.message); else {input.value=''; await loadMessages();} };
+  document.getElementById('teamChatSignIn').onclick = async () => {
+    const player = nickname.value.trim(), secret = password.value;
+    if (!player || !secret) { setStatus('Введите ник и клубный пароль.'); return; }
+    setStatus('Проверка доступа…');
+    try {
+      const response = await fetch('https://ebagwygqmdynpiddwuki.supabase.co/functions/v1/team-login', {
+        method:'POST', headers:{'Content-Type':'application/json','apikey':"sb_publishable_Fo3f0hO9pFDQxHlYtQkM7g_jwoAMR3L"},
+        body:JSON.stringify({nickname:player,password:secret})
+      });
+      const result = await response.json();
+      if (!response.ok || !result.ok) { setStatus(result.error || 'Доступ запрещён.'); return; }
+      const { data, error } = await supabase.auth.signInAnonymously();
+      if (error) { setStatus(error.message); return; }
+      await supabase.auth.updateUser({ data:{nickname:player} });
+      currentNickname = player; password.value=''; setStatus(''); await render(data.session);
+    } catch { setStatus('Не удалось связаться с сервером.'); }
+  };
+  document.getElementById('teamChatSignOut').onclick = async () => { currentNickname=''; await supabase.auth.signOut(); };
+  document.getElementById('teamChatSend').onclick = async () => {
+    const input=document.getElementById('teamChatMessage'), text=input.value.trim(); if(!text)return;
+    const {data:{user}}=await supabase.auth.getUser(); if(!user)return;
+    const {error}=await supabase.from('team_messages').insert({user_id:user.id,message:text});
+    if(error)setStatus(error.message); else {input.value=''; await loadMessages();}
+  };
   supabase.auth.onAuthStateChange((_event,session) => render(session));
   supabase.auth.getSession().then(({data:{session}}) => render(session));
   supabase.channel('team-chat-live').on('postgres_changes',{event:'INSERT',schema:'public',table:'team_messages'},loadMessages).subscribe();
