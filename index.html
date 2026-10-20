@@ -1201,7 +1201,7 @@
   <button type="button" id="winxMusicToggle" aria-pressed="false" aria-controls="winxSoundtrack">♫ Включить музыку Winx</button>
   <small>Только вместе мы сильны</small>
   <small id="winxMusicStatus" role="status" aria-live="polite"></small>
-  <a id="winxMusicFallback" href="https://винкс.skysound7.com/t/16673666981846662532-винкс-только-вместе-мы-сильны/" target="_blank" rel="noopener noreferrer" hidden>Открыть трек ↗</a>
+  <a id="winxMusicFallback" href="assets/winx-together.mp3" target="_blank" rel="noopener noreferrer" hidden>Открыть трек ↗</a>
   </div>
 </div>
 <audio id="winxSoundtrack" preload="none" loop></audio>
@@ -1271,7 +1271,8 @@
     winxMusicFallback.hidden = true;
     winxMusicToggle.disabled = true;
     try {
-      if (!winxSoundtrack.getAttribute('src')) winxSoundtrack.src = "https://fine.sunproxy.net/file/SDFPUk43TVp4Tmp3VzM5ajBLQWJZSGZ6UDkzUWlyQmlITjlYUlVHNENSSGFXMTkvVmJ0R085L1F6QUhZRDVXdTJYTllueUxKNUNCVmkvUEFNZzhSSDFseTVnWDJUMHdyK1QxeUxmdGZIc1pXWFJWcWpFZE5MOWEzT01XQjVnS2lvRTFaSWJ2THBscmxtV1JiZ3hpYnd3PT0/Vinks_-_Tolko_vmeste_my_silny_(SkySound7.com).mp3";
+      if (!winxSoundtrack.getAttribute('src')) winxSoundtrack.src = 'assets/winx-together.mp3';
+      else if (winxSoundtrack.error) winxSoundtrack.load();
       await winxSoundtrack.play();
       winxMusicStatus.textContent = '';
     } catch (error) { winxMusicError(); }
