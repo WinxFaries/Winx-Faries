@@ -1,4 +1,4 @@
-const CACHE_NAME = "winx-fairies-app-v3";
+const CACHE_NAME = "winx-fairies-app-v4";
 const APP_SHELL = ["./","./index.html","./manifest.webmanifest","./assets/favicon-192.png"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));
